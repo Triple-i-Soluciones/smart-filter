@@ -1,0 +1,44 @@
+<p>
+    CONFIG: 
+    {{config | json}}
+</p>
+
+<p>
+    FORM: 
+    {{filterForm.value | json}}
+</p>
+
+<div>
+
+    <div [formGroup]="filterForm">
+
+        <ng-container formArrayName="filters">
+            <ng-container *ngFor="let lessonForm of filters.controls; let i = index">
+                <div class="lesson-form-row" [formGroup]="lessonForm">
+                    <mat-form-field appearance="fill">
+                        <input matInput
+                               formControlName="title"
+                               placeholder="Lesson title">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-select formControlName="level"
+                                placeholder="Lesson level">
+                            <mat-option value="beginner">Beginner</mat-option>
+                            <mat-option value="intermediate">Intermediate</mat-option>
+                            <mat-option value="advanced">Advanced</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-icon class="delete-btn" (click)="deleteFilter(i)">
+                        delete_forever</mat-icon>
+                </div>
+            </ng-container>
+        </ng-container>
+
+    </div>
+
+    <button [type]="'button'" (click)="addFilter()">+ Agregar filtro</button>
+</div>
+
+<div>
+
+</div>
