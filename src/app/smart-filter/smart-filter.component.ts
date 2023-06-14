@@ -24,6 +24,7 @@ export class SmartFilterComponent {
   });
 
   filterOptionsMenu: FormControl = this._formBuilder.control('');
+  queryOptionsMenu: FormControl = this._formBuilder.control('');
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -65,6 +66,7 @@ export class SmartFilterComponent {
       isCustome: [''],
       optionList: [''],
       isDefault: [''],
+      filterOperator: [''],
     });
     this.filters.push(filter);
   }
@@ -73,9 +75,35 @@ export class SmartFilterComponent {
 
     let filters: FormArray;
     filters = this.filters as FormArray
-    filters.at(filterIndex).setValue(field)
-
+    filters.at(filterIndex).setValue(field);
   }
+
+  getQueryOptions(fieldType: string) {
+console.log("getQueryOptions", fieldType)
+    const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
+
+    if (index === -1) {
+      return []
+    } 
+
+    return this.config.queryOptions[index].options;
+  }
+
+  QueryOptionsChange(field: Field, filterIndex: number) {
+    console.log(field)
+
+    this.seFilterOperatorValue(field, filterIndex)
+    
+  }
+
+  seFilterOperatorValue(field: Field, filterIndex: number) {
+
+    let filters: FormArray;
+    filters = this.filters as FormArray
+    filters.at(filterIndex).get('filterOperator');
+  }
+
+
 
   deleteFilter(filterIndex: number) {
     this.filters.removeAt(filterIndex);
@@ -86,8 +114,6 @@ export class SmartFilterComponent {
 
     this.seFilterValue(field, filterIndex)
     
-
-
   }
 
   setOption() {

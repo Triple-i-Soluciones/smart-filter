@@ -45,9 +45,13 @@
                         </mat-select>
                       </mat-form-field>
 
-                      <div class="border border-gray-200 p-2">
-                        Opciones
-                      </div>
+                      <mat-form-field>
+                        <mat-select [formControl]="queryOptionsMenu" (selectionChange)="QueryOptionsChange($event.value, i)">
+                          <mat-option *ngFor="let option of getQueryOptions(filters.at(i).get('dataType')?.value)" [value]="option">
+                            {{option}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
 
                     <mat-form-field appearance="fill">
                         <input matInput formControlName="displayName" placeholder="filter values">
