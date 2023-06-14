@@ -15,11 +15,11 @@ export class AppComponent {
     filterOptionsMenu: [
       {
         _id: '1',
-        displayName: 'nombre'
+        displayName: 'nombre',
       },
       {
         _id: '2',
-        displayName: 'fecha de término'
+        displayName: 'fecha de término',
       }
     ],
     fields: [

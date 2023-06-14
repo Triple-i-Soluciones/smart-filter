@@ -14,6 +14,11 @@
     {{filterForm.get('filters')?.value | json}}
 </p>
 
+<p>
+    FILTER SELECTED CONTROL:
+    {{fitlerOptionsMenu.value | json}}
+</p>
+
 <div>
 
     <div [formGroup]="filterForm">
@@ -27,10 +32,19 @@
                         <input matInput formControlName="displayName" placeholder="filter displayName">
                     </mat-form-field>
 
+                    <mat-form-field>
+                        <mat-label>Filtrar por</mat-label>
+                        <mat-select [formControl]="fitlerOptionsMenu">
+                          <mat-option *ngFor="let option of config.filterOptionsMenu" [value]="option._id">
+                            {{option.displayName}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+<!-- 
                     
                         <mat-select placeholder="Elige una opción">
                             <mat-option [value]="option._id" *ngFor="let option of config.filterOptionsMenu">{{option.displayName}}</mat-option>
-                        </mat-select>
+                        </mat-select> -->
 
                         
                     <mat-icon class="delete-btn" (click)="deleteFilter(i)">

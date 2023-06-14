@@ -23,6 +23,8 @@ export class SmartFilterComponent {
     filters: this._formBuilder.array([]),
   });
 
+  fitlerOptionsMenu: FormControl = this._formBuilder.control('');
+
   constructor(
     private _formBuilder: FormBuilder,
   ) {}
@@ -35,6 +37,8 @@ export class SmartFilterComponent {
     //     displayName: filter.displayName,
     //   }
     // })
+
+    // this.fitlerOptionsMenu = this._formBuilder.
 
   }
 
