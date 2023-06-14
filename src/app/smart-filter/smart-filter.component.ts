@@ -93,7 +93,7 @@ export class SmartFilterComponent {
   
     const valueArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
-    valueArray.push(this.filters.at(filterIndex).get('value')?.value)
+    valueArray.push(this.filters.at(filterIndex).get('value'))
   }
 
   setQueryOptions(fieldType: string) {
