@@ -52,13 +52,13 @@ export class SmartFilterComponent {
    */
 
 
-  get filters() {
+  get filters(): FormArray {
     return this.filterForm.controls["filters"] as FormArray;
   }
 
   addFilter() {
     const filter = this._formBuilder.group({
-      _id: [],
+      _id: [''],
       displayName: [''],
       dbName: [''],
       dataType: [''],
@@ -69,6 +69,14 @@ export class SmartFilterComponent {
     this.filters.push(filter);
   }
 
+  seFilterValue(field: Field, filterIndex: number) {
+
+    let filters: FormArray;
+    filters = this.filters as FormArray
+    filters.at(filterIndex).setValue(field)
+
+  }
+
   deleteFilter(filterIndex: number) {
     this.filters.removeAt(filterIndex);
   }
@@ -76,7 +84,7 @@ export class SmartFilterComponent {
   filterOptionsChange(field: Field, filterIndex: number) {
     console.log(field)
 
-
+    this.seFilterValue(field, filterIndex)
     
 
 

@@ -40,7 +40,7 @@ export class AppComponent {
     fields: [
       {
         _id: '1',
-        displayName: 'nombre',
+        displayName: 'nombre del proyecto',
         dbName: 'name',
         dataType: 'text',
         isCustome: false,
