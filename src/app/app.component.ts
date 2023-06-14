@@ -46,6 +46,7 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
+        queryOptions: ['contenga', 'no contenga', 'esté vacío'],
       },
       {
         _id: '2',
@@ -55,7 +56,18 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-      }
+        queryOptions: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de']
+      },
+      {
+        _id: '3',
+        displayName: 'prefix',
+        dbName: 'prefix',
+        dataType: 'text',
+        isCustome: false,
+        optionList: [],
+        isDefault: false,
+        queryOptions: ['contenga', 'no contenga', 'esté vacío'],
+      },
     ]
   }
 

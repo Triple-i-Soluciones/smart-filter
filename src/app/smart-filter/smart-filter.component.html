@@ -12,7 +12,7 @@
     
     <p>
         FILTERS:
-        {{filterForm.get('filters')?.value | json}}
+        {{filters.value | json}}
     </p>
     
     <!-- <p>
@@ -46,15 +46,17 @@
                       </mat-form-field>
 
                       <mat-form-field>
-                        <mat-select [formControl]="queryOptionsMenu" (selectionChange)="QueryOptionsChange($event.value, i)">
-                          <mat-option *ngFor="let option of getQueryOptions(filters.at(i).get('dataType')?.value)" [value]="option">
+                        <mat-select formControlName="filterOperator">
+                          <mat-option *ngFor="let option of filterControl.get('queryOptions')?.value" [value]="option">
                             {{option}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
 
+                      <!-- {{filterControl.get('queryOptions')?.value | json}} -->
+
                     <mat-form-field appearance="fill">
-                        <input matInput formControlName="displayName" placeholder="filter values">
+                        <input matInput formControlName="value" placeholder="filter values">
                     </mat-form-field>
 
 <!-- 

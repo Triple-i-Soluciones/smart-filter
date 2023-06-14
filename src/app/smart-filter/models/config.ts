@@ -23,7 +23,7 @@ export class Field {
     isCustome: boolean = false;
     optionList: string[] = [];
     isDefault: boolean = false;
-     
+    queryOptions: string[] = [];
 }
 
 export class filterOptionMenu {

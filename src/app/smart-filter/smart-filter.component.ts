@@ -67,16 +67,35 @@ export class SmartFilterComponent {
       optionList: [''],
       isDefault: [''],
       filterOperator: [''],
+      queryOptions: [''],
+      // values: [this._formBuilder.array([])],
     });
     this.filters.push(filter);
   }
 
-  seFilterValue(field: Field, filterIndex: number) {
+  setFilterValue(field: Field, filterIndex: number) {
 
-    let filters: FormArray;
-    filters = this.filters as FormArray
-    filters.at(filterIndex).setValue(field);
+    this.filters.at(filterIndex).patchValue(field);
+    this.filters.at(filterIndex).get('value')
+
+
+    // let queryOptions = this.filters.at(filterIndex).get('queryOptionsMenu') as FormArray;
+    // queryOptions.clear();
+    // const type: string = this.filters.at(filterIndex).get('dataType')?.value;
+    // queryOptions.push(this._formBuilder.array(this.setQueryOptions(type)))
+
   }
+
+  setQueryOptions(fieldType: string) {
+    console.log("getQueryOptions", fieldType)
+        const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
+    
+        if (index === -1) {
+          return []
+        } 
+    
+        return this.config.queryOptions[index].options;
+      }
 
   getQueryOptions(fieldType: string) {
 console.log("getQueryOptions", fieldType)
@@ -89,19 +108,19 @@ console.log("getQueryOptions", fieldType)
     return this.config.queryOptions[index].options;
   }
 
-  QueryOptionsChange(field: Field, filterIndex: number) {
-    console.log(field)
+  // QueryOptionsChange(field: Field, filterIndex: number) {
+  //   console.log(field)
 
-    this.seFilterOperatorValue(field, filterIndex)
+  //   this.seFilterOperatorValue(field, filterIndex)
     
-  }
+  // }
 
-  seFilterOperatorValue(field: Field, filterIndex: number) {
+  // seFilterOperatorValue(field: Field, filterIndex: number) {
 
-    let filters: FormArray;
-    filters = this.filters as FormArray
-    filters.at(filterIndex).get('filterOperator');
-  }
+  //   let filters: FormArray;
+  //   filters = this.filters as FormArray
+  //   filters.at(filterIndex).get('filterOperator');
+  // }
 
 
 
@@ -110,10 +129,7 @@ console.log("getQueryOptions", fieldType)
   }
 
   filterOptionsChange(field: Field, filterIndex: number) {
-    console.log(field)
-
-    this.seFilterValue(field, filterIndex)
-    
+    this.setFilterValue(field, filterIndex)
   }
 
   setOption() {
