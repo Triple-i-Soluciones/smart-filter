@@ -42,6 +42,15 @@ export class SmartFilterComponent {
 
   }
 
+  /**
+   * string: contenga, no contenga, esté vacío
+   * date: mayor que, menor que, entre, mayor o igual que, menor o igual que, vacío, igual a, diferente de
+   * number: 
+   * 
+   * 
+   * 
+   */
+
 
   get filters() {
     return this.filterForm.controls["filters"] as FormArray;
