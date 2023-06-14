@@ -31,15 +31,16 @@
             <ng-container *ngFor="let filterControl of filters.controls; let i = index">
                 <div class="flex gap-4" [formGroupName]="i">
                 
-                    <mat-form-field appearance="fill">
+                    <!-- <mat-form-field appearance="fill">
                         <input matInput formControlName="displayName" placeholder="filter displayName">
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <label for="">Nombre: </label>
 
                     <mat-form-field>
-                        <mat-label>Filtrar por</mat-label>
-                        <mat-select [formControl]="filterOptionsMenu">
-                          <mat-option *ngFor="let option of config.filterOptionsMenu" [value]="option._id">
-                            {{option.displayName}}
+                        <mat-select [formControl]="filterOptionsMenu" (selectionChange)="filterOptionsChange($event.value, i)">
+                          <mat-option *ngFor="let field of config.fields" [value]="field">
+                            {{field.displayName}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -48,9 +49,9 @@
                         Opciones
                       </div>
 
-                      <div class="border border-gray-200 p-2">
-                        valor
-                      </div>
+                    <mat-form-field appearance="fill">
+                        <input matInput formControlName="displayName" placeholder="filter displayName">
+                    </mat-form-field>
 
 <!-- 
                     

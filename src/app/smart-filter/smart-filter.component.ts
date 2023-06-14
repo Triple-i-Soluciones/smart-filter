@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
-import { Config, filterOptionMenu } from './models/config';
+import { Config, Field, filterOptionMenu } from './models/config';
 
 export class UserComponent {
   user = new FormGroup({
@@ -71,6 +71,19 @@ export class SmartFilterComponent {
 
   deleteFilter(filterIndex: number) {
     this.filters.removeAt(filterIndex);
+  }
+
+  filterOptionsChange(field: Field, filterIndex: number) {
+    console.log(field)
+
+
+    
+
+
+  }
+
+  setOption() {
+
   }
   
 }

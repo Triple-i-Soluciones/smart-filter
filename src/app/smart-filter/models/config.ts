@@ -6,7 +6,8 @@ export class Config {
 
     filterOptionsMenu: filterOptionMenu[] = [];
     fields: Field[] = [];
-     
+    queryOptions: QueryOption[] = [];
+
 }
 
 export class Field {
@@ -33,5 +34,16 @@ export class filterOptionMenu {
 
     _id: string = '';
     displayName: string = '';
+     
+}
+
+export class QueryOption {
+
+    public constructor(init?: Partial<Field>){
+        Object.assign(this, init);
+    }
+
+    type: string = '';
+    options: string[] = [];
      
 }

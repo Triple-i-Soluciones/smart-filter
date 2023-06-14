@@ -22,6 +22,21 @@ export class AppComponent {
         displayName: 'fecha de término',
       }
     ],
+    queryOptions: [
+      {
+        type: 'text',
+        options: ['contenga', 'no contenga', 'esté vacío'],
+      },
+      {
+        // TODO: type: 'date' || 'number', evaluar si se usa así más adelante
+        type: 'date',
+        options: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
+      },
+      {
+        type: 'number',
+        options: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
+      }
+    ],
     fields: [
       {
         _id: '1',
