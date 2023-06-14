@@ -1,23 +1,26 @@
-<p>
-    CONFIG: 
-    {{config | json}}
-</p>
+<div class="mb-10">
+    <p>
+        CONFIG: 
+        {{config | json}}
+    </p>
+    
+    <p>
+        FORM: 
+        {{filterForm.value | json}}
+    </p>
+    
+    
+    <p>
+        FILTERS:
+        {{filterForm.get('filters')?.value | json}}
+    </p>
+    
+    <p>
+        FILTER SELECTED CONTROL:
+        {{filterOptionsMenu.value | json}}
+    </p>
+</div>
 
-<p>
-    FORM: 
-    {{filterForm.value | json}}
-</p>
-
-
-<p>
-    FILTERS:
-    {{filterForm.get('filters')?.value | json}}
-</p>
-
-<p>
-    FILTER SELECTED CONTROL:
-    {{fitlerOptionsMenu.value | json}}
-</p>
 
 <div>
 
@@ -26,7 +29,7 @@
         <ng-container formArrayName="filters">
 
             <ng-container *ngFor="let filterControl of filters.controls; let i = index">
-                <div class="filter-form-row" [formGroupName]="i">
+                <div class="flex gap-4" [formGroupName]="i">
                 
                     <mat-form-field appearance="fill">
                         <input matInput formControlName="displayName" placeholder="filter displayName">
@@ -34,12 +37,21 @@
 
                     <mat-form-field>
                         <mat-label>Filtrar por</mat-label>
-                        <mat-select [formControl]="fitlerOptionsMenu">
+                        <mat-select [formControl]="filterOptionsMenu">
                           <mat-option *ngFor="let option of config.filterOptionsMenu" [value]="option._id">
                             {{option.displayName}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
+
+                      <div class="border border-gray-200 p-2">
+                        Opciones
+                      </div>
+
+                      <div class="border border-gray-200 p-2">
+                        valor
+                      </div>
+
 <!-- 
                     
                         <mat-select placeholder="Elige una opción">
