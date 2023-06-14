@@ -68,6 +68,16 @@ export class AppComponent {
         isDefault: false,
         queryOptions: ['contenga', 'no contenga', 'esté vacío'],
       },
+      {
+        _id: '4',
+        displayName: 'La lista',
+        dbName: 'La lista',
+        dataType: 'dropdown',
+        isCustome: true,
+        optionList: ['element 1', 'elemento 2', 'elemento 3'],
+        isDefault: false,
+        queryOptions: ['contenga', 'no contenga', 'esté vacío'],
+      },
     ]
   }
 

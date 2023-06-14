@@ -68,7 +68,8 @@ export class SmartFilterComponent {
       isDefault: [''],
       filterOperator: [''],
       queryOptions: [''],
-      // values: [this._formBuilder.array([])],
+      value: [''],
+      values: this._formBuilder.array([]),
     });
     this.filters.push(filter);
   }
@@ -76,7 +77,9 @@ export class SmartFilterComponent {
   setFilterValue(field: Field, filterIndex: number) {
 
     this.filters.at(filterIndex).patchValue(field);
-    this.filters.at(filterIndex).get('value')
+    const valueArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    // valueArray.push(this.filters.at(filterIndex).get('value')?.value)
 
 
     // let queryOptions = this.filters.at(filterIndex).get('queryOptionsMenu') as FormArray;
@@ -84,6 +87,13 @@ export class SmartFilterComponent {
     // const type: string = this.filters.at(filterIndex).get('dataType')?.value;
     // queryOptions.push(this._formBuilder.array(this.setQueryOptions(type)))
 
+  }
+
+  setValue(filterIndex: number) {
+  
+    const valueArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    valueArray.push(this.filters.at(filterIndex).get('value')?.value)
   }
 
   setQueryOptions(fieldType: string) {
