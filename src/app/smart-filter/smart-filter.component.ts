@@ -23,6 +23,8 @@ export class SmartFilterComponent {
     filters: this._formBuilder.array([]),
   });
 
+  range!: FormGroup;
+
   filterOptionsMenu: FormControl = this._formBuilder.control('');
   queryOptionsMenu: FormControl = this._formBuilder.control('');
 
@@ -31,6 +33,11 @@ export class SmartFilterComponent {
   ) {}
 
   ngOnInit() {
+
+    this.range = new FormGroup({
+      start: new FormControl(),
+      end: new FormControl()
+    });
 
     // this.filterMenuOption = this.config.fields.map(filter => {
     //   return {
@@ -144,6 +151,10 @@ console.log("getQueryOptions", fieldType)
 
   setOption() {
 
+  }
+
+  setDates(filterIndex: number, date: string){
+    console.log(this.range.value)
   }
   
 }
