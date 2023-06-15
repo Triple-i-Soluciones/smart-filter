@@ -21,7 +21,7 @@ export class Field {
     dbName: string = '';
     dataType: string = '';
     isCustome: boolean = false;
-    optionList: string[] = [];
+    optionList: string[] | ObjectList[] = [];
     isDefault: boolean = false;
     queryOptions: string[] = [];
 }
@@ -46,4 +46,14 @@ export class QueryOption {
     type: string = '';
     options: string[] = [];
      
+}
+
+export class ObjectList {
+
+    public constructor(init?: Partial<ObjectList>){
+        Object.assign(this, init);
+    }
+
+    _id: string = '';
+    displayName: string = '';
 }

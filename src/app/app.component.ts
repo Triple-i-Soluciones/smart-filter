@@ -46,7 +46,7 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        queryOptions: ['contenga', 'no contenga', 'esté vacío'],
+        queryOptions: ['igual a', 'contenga', 'no contenga', 'esté vacío'],
       },
       {
         _id: '2',
@@ -66,7 +66,7 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        queryOptions: ['contenga', 'no contenga', 'esté vacío'],
+        queryOptions: ['igual a', 'contenga', 'no contenga', 'esté vacío'],
       },
       {
         _id: '4',
@@ -77,6 +77,16 @@ export class AppComponent {
         optionList: ['element 1', 'elemento 2', 'elemento 3'],
         isDefault: false,
         queryOptions: ['contenga', 'no contenga', 'esté vacío'],
+      },
+      {
+        _id: '5',
+        displayName: 'Ingenieros asignados',
+        dbName: 'assigned_engineers',
+        dataType: 'multi-dropdown',
+        isCustome: false,
+        optionList: [{_id: 'aaaaa', displayName: 'Noé Reyes'}, {_id: 'bbbbb', displayName: 'Alexis Rodríguez'}, {_id: 'ccccc', displayName: 'Sergio Alonso'}],
+        isDefault: false,
+        queryOptions: ['igual a', 'contenga', 'no contenga', 'esté vacío'],
       },
     ]
   }

@@ -28,6 +28,9 @@ export class SmartFilterComponent {
   filterOptionsMenu: FormControl = this._formBuilder.control('');
   queryOptionsMenu: FormControl = this._formBuilder.control('');
 
+  toppings = new FormControl('');
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+
   constructor(
     private _formBuilder: FormBuilder,
   ) {}
@@ -38,6 +41,8 @@ export class SmartFilterComponent {
       start: new FormControl(),
       end: new FormControl()
     });
+    
+
 
     // this.filterMenuOption = this.config.fields.map(filter => {
     //   return {
@@ -84,7 +89,8 @@ export class SmartFilterComponent {
   setFilterValue(field: Field, filterIndex: number) {
 
     this.filters.at(filterIndex).patchValue(field);
-    const valueArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+
 
     // valueArray.push(this.filters.at(filterIndex).get('value')?.value)
 
@@ -155,6 +161,12 @@ console.log("getQueryOptions", fieldType)
 
   setDates(filterIndex: number, date: string){
     console.log(this.range.value)
+  }
+  
+  filter() {
+    const form = this.filterForm.getRawValue();
+
+    console.log(form)
   }
   
 }

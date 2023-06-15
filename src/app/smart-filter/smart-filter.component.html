@@ -59,6 +59,9 @@
                         </mat-select>
                       </mat-form-field> -->
 
+
+
+
                       <mat-form-field>
                         <mat-select formControlName="filterOperator">
                           <mat-option *ngFor="let option of filterControl.get('queryOptions')?.value" [value]="option">
@@ -66,8 +69,6 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-
-                      <!-- {{filterControl.get('queryOptions')?.value | json}} -->
 
                       <mat-form-field *ngIf="filterControl.get('filterOperator')?.value === 'entre'">
                         <mat-label>Enter a date range</mat-label>
@@ -80,9 +81,32 @@
                         <mat-date-range-picker #picker></mat-date-range-picker>
                       </mat-form-field>
 
-                    <mat-form-field appearance="fill" *ngIf="filterControl.get('filterOperator')?.value !== 'entre'">
+                    <!-- HTML element according field type -->
+                    <ng-container [ngSwitch]="filterControl.get('dataType')?.value">
+                        <div *ngSwitchCase="'text'">
+                            is text
+                        </div>
+                        <div *ngSwitchCase="'number'">is number</div>
+                        <div *ngSwitchCase="'date'">is date</div>
+                        <div *ngSwitchCase="'dropdown'">is dropdown</div>
+                        <div *ngSwitchCase="'checklist'">is checklist</div>
+                        <div *ngSwitchCase="'multi-dropdown'">
+
+                            <mat-form-field>
+                                <mat-label>Valores</mat-label>
+                                <mat-select formControlName="value" multiple>
+                                  <mat-option *ngFor="let option of filterControl.get('optionList')?.value" [value]="option._id">{{option.displayName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+                        
+                        <div *ngSwitchDefault>...</div>
+                    </ng-container>
+
+                    <!-- <mat-form-field appearance="fill">
                         <input #elInput matInput formControlName="value" placeholder="filter values" (keyup.enter)="setValue(i)">
-                    </mat-form-field>
+                    </mat-form-field> -->
 
 <!-- 
                     
@@ -102,6 +126,6 @@
     <button [type]="'button'" (click)="addFilter()">+ Agregar filtro</button>
 </div>
 
-<div>
-
+<div class="mt-10">
+    <button class="border border-gray-300 px-2 py-2" [type]="'button'" (click)="filter()">Aplicar filtro</button>
 </div>
