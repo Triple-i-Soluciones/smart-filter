@@ -69,7 +69,7 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-
+                      
                       <mat-form-field *ngIf="filterControl.get('filterOperator')?.value === 'entre'">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
@@ -84,11 +84,36 @@
                     <!-- HTML element according field type -->
                     <ng-container [ngSwitch]="filterControl.get('dataType')?.value">
                         <div *ngSwitchCase="'text'">
-                            is text
+                          <mat-form-field>
+                            <mat-label>Texto</mat-label>
+                            <input type="text" matInput formControlName="value">
+                          </mat-form-field>
                         </div>
-                        <div *ngSwitchCase="'number'">is number</div>
-                        <div *ngSwitchCase="'date'">is date</div>
-                        <div *ngSwitchCase="'dropdown'">is dropdown</div>
+                        <div *ngSwitchCase="'number'">is number
+                          <input type="number" matInput formControlName="value">
+                        </div>
+                        <div *ngSwitchCase="'date'">
+                          <div *ngIf="filterControl.get('filterOperator')?.value !== 'entre'">
+                            <mat-form-field>
+                              <input 
+                              matInput [matDatepicker]="picker"
+                              readonly="true"
+                              formControlName="value">
+                              <mat-hint>MM/DD/YYYY</mat-hint>
+                              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="'dropdown'">
+                          <mat-form-field>
+                            <mat-label>Dropdown</mat-label>
+                            <mat-select formControlName="value">
+                              <mat-option *ngFor="let option of filterControl.get('optionList')?.value let i = index" 
+                              [value]="option">{{option}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        </div>
                         <div *ngSwitchCase="'checklist'">is checklist</div>
                         <div *ngSwitchCase="'multi-dropdown'">
 
