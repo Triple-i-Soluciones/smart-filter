@@ -76,7 +76,7 @@
                 [matDatepicker]="picker" 
                 readonly="true" 
                 formControlName="value"
-                (dateChange)="setDateValue($event, i, 'date', filterControl.get('selectedSearchOption')?.value)"
+                (dateChange)="setDateValue($event, i, filterControl.get('selectedSearchOption')?.value)"
                 >
                 <mat-hint>DD/MM/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -86,8 +86,8 @@
                 <mat-label>Rango de fechas</mat-label>
                 <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
                   <input matStartDate formControlName="start" placeholder="Start date"
-                    (dateInput)="setDates(i, 'start')">
-                  <input matEndDate formControlName="end" placeholder="End date" (dateInput)="setDates(i, 'end')">
+                    (dateInput)="setDateValue($event, i, 'entre', 'start')">
+                  <input matEndDate formControlName="end" placeholder="End date" (dateInput)="setDateValue($event, i, 'entre', 'end')">
                 </mat-date-range-input>
                 <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

@@ -146,18 +146,6 @@ export class SmartFilterComponent {
     valuesArray.push(this._formBuilder.control(value));
   }
 
-  setDateValue(event: any, filterIndex: number, dataType: string, filterOption: string): void{
-
-    const value: string | number = event.target.value;
-
-    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-
-    if (valuesArray.length > 0 && filterOption !== "entre"){
-      valuesArray.clear()
-    }
-    valuesArray.push(this._formBuilder.control(value));
-  }
-
   setSecondInputValue(event: any, filterIndex: number, dataType: string): void {
 
     const value: string | number = event.target.value;
@@ -169,4 +157,19 @@ export class SmartFilterComponent {
     }
     valuesArray.push(this._formBuilder.control(value));
   }
+
+  setDateValue(event: any, filterIndex: number, filterOption: string, dateRange?: string): void{
+
+    const value: string = event.target.value;
+
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    if (valuesArray.length > 0 && filterOption !== "entre") valuesArray.clear();
+    
+    if (valuesArray.length > 0 && dateRange==="start") valuesArray.clear();
+    
+    valuesArray.push(this._formBuilder.control(value));
+  }
+
+  
 }
