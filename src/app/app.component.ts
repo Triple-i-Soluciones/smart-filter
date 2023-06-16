@@ -86,7 +86,17 @@ export class AppComponent {
         isCustome: false,
         optionList: [{_id: 'aaaaa', displayName: 'Noé Reyes'}, {_id: 'bbbbb', displayName: 'Alexis Rodríguez'}, {_id: 'ccccc', displayName: 'Sergio Alonso'}],
         isDefault: false,
-        queryOptions: ['igual a', 'contenga', 'no contenga', 'esté vacío'],
+        queryOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+      },
+      {
+        _id: '6',
+        displayName: 'Prioridad',
+        dbName: 'priority',
+        dataType: 'numeric-dropdown',
+        isCustome: false,
+        optionList: [{_id: '0', displayName: 'No urgente'}, {_id: '1', displayName: 'Urgente'}, {_id: '2', displayName: 'Crítica'}],
+        isDefault: false,
+        queryOptions: ['igual a', 'diferente de', 'esté vacío'],
       },
     ]
   }
