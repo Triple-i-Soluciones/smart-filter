@@ -166,10 +166,9 @@ export class SmartFilterComponent {
 
     if (valuesArray.length > 0 && filterOption !== "entre") valuesArray.clear();
     
-    if (valuesArray.length > 0 && dateRange==="start") valuesArray.clear();
-    
-    valuesArray.push(this._formBuilder.control(value));
+    if ((valuesArray.length > 0 && dateRange==="start")) valuesArray.clear();
+
+    if (value !== null) valuesArray.push(this._formBuilder.control(value));
   }
 
-  
 }
