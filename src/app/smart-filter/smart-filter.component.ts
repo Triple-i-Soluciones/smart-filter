@@ -26,7 +26,7 @@ export class SmartFilterComponent {
   range!: FormGroup;
 
   filterField: FormControl = this._formBuilder.control('');
-  queryOptionsMenu: FormControl = this._formBuilder.control('');
+  tempContr: FormControl = this._formBuilder.control('');
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -45,7 +45,7 @@ export class SmartFilterComponent {
     return this.filterForm.controls["filters"] as FormArray;
   }
 
-  addFilter() {
+  addFilter(): void {
     const filter = this._formBuilder.group({
       _id: [''],
       displayName: [''],
@@ -56,8 +56,8 @@ export class SmartFilterComponent {
       isDefault: [''],
       selectedSearchOption: [''],
       searchOptions: [''],
-      values: [''],
-      // values: this._formBuilder.array([]),
+      value: [''],
+      values: this._formBuilder.array([]),
     });
 
     // ToDo: check
@@ -112,30 +112,37 @@ export class SmartFilterComponent {
   //   filters.at(filterIndex).get('selectedSearchOption');
   // }
 
-  deleteFilter(filterIndex: number) {
+  deleteFilter(filterIndex: number): void {
     this.filters.removeAt(filterIndex);
   }
 
-  filterFieldChange(field: Field, filterIndex: number) {
+  filterFieldChange(field: Field, filterIndex: number): void {
     this.setFilterValue(field, filterIndex)
   }
 
-  setFilterValue(field: Field, filterIndex: number) {
+  setFilterValue(field: Field, filterIndex: number): void {
     this.filters.at(filterIndex).patchValue(field);
   }
 
-  setDates(filterIndex: number, date: string) {
+  setDates(filterIndex: number, date: string): void {
     console.log(this.range.value)
   }
 
-  filter() {
+  filter(): void {
     const form = this.filterForm.getRawValue();
     console.log("form filters", form.filters) 
   }
 
-  setInputValue(event: any) {
-    // Prueba para meter los valores en un array
-    console.log(event)
+  setInputValue(event: any, filterIndex: number, dataType: string): void {
+
+    const value: string | number = event.target.value;
+
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    if (valuesArray.length > 0) {
+      valuesArray.clear()
+    }
+    valuesArray.push(this._formBuilder.control(value));
   }
 
 }

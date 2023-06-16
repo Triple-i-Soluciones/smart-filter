@@ -54,19 +54,19 @@
             <div *ngSwitchCase="'text'">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
-                <input type="text" matInput formControlName="values">
+                <input type="text" matInput formControlName="value" (change)="setInputValue($event, i, 'text')">
               </mat-form-field>
             </div>
             <div *ngSwitchCase="'number'">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
-                <input type="number" matInput formControlName="values">
+                <input type="number" matInput formControlName="value" (change)="setInputValue($event, i, 'number')">
               </mat-form-field>
             </div>
             <div *ngSwitchCase="'date'">
               <mat-form-field *ngIf="filterControl.get('selectedSearchOption')?.value !== 'entre'">
                 <mat-label>Fecha</mat-label>
-                <input matInput [matDatepicker]="picker" readonly="true" formControlName="values">
+                <input matInput [matDatepicker]="picker" readonly="true" formControlName="value">
                 <mat-hint>DD/MM/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
@@ -86,7 +86,7 @@
             <div *ngSwitchCase="'dropdown'">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
-                <mat-select formControlName="values">
+                <mat-select formControlName="value">
                   <mat-option *ngFor="let option of filterControl.get('optionList')?.value let i = index"
                     [value]="option">{{option}}</mat-option>
                 </mat-select>
@@ -98,7 +98,7 @@
             <div *ngSwitchCase="'multi-dropdown'">
               <mat-form-field>
                 <mat-label>Valores</mat-label>
-                <mat-select formControlName="values" multiple>
+                <mat-select formControlName="value" multiple>
                   <mat-option *ngFor="let option of filterControl.get('optionList')?.value"
                     [value]="option._id">{{option.displayName}}</mat-option>
                 </mat-select>
@@ -107,7 +107,7 @@
             <div *ngSwitchCase="'composite-dropdown'">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
-                <mat-select formControlName="values">
+                <mat-select formControlName="value">
                   <mat-option *ngFor="let option of filterControl.get('optionList')?.value let i = index"
                     [value]="option._id">{{option.displayName}}</mat-option>
                 </mat-select>
