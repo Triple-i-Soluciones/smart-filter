@@ -69,17 +69,6 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-                      
-                      <mat-form-field *ngIf="filterControl.get('filterOperator')?.value === 'entre'">
-                        <mat-label>Enter a date range</mat-label>
-                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                          <input matStartDate formControlName="start" placeholder="Start date" (dateInput)="setDates(i, 'start')">
-                          <input matEndDate formControlName="end" placeholder="End date" (dateInput)="setDates(i, 'end')">
-                        </mat-date-range-input>
-                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                      </mat-form-field>
 
                     <!-- HTML element according field type -->
                     <ng-container [ngSwitch]="filterControl.get('dataType')?.value">
@@ -99,11 +88,21 @@
                               matInput [matDatepicker]="picker"
                               readonly="true"
                               formControlName="value">
-                              <mat-hint>MM/DD/YYYY</mat-hint>
+                              <mat-hint>DD/MM/YYYY</mat-hint>
                               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                           </div>
+                          <mat-form-field *ngIf="filterControl.get('filterOperator')?.value === 'entre'">
+                            <mat-label>Elige un rango de fechas</mat-label>
+                            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                              <input matStartDate formControlName="start" placeholder="Start date" (dateInput)="setDates(i, 'start')">
+                              <input matEndDate formControlName="end" placeholder="End date" (dateInput)="setDates(i, 'end')">
+                            </mat-date-range-input>
+                            <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                          </mat-form-field>
                         </div>
                         <div *ngSwitchCase="'dropdown'">
                           <mat-form-field>

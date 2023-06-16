@@ -10,6 +10,7 @@ import {MatInputModule} from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import {MatNativeDateModule} from '@angular/material/core';
   exports: [
     SmartFilterComponent,
   ],
-  providers: [],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es' }],
   bootstrap: []
 })
 export class SmartFilterModule { }
