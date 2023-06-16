@@ -12,16 +12,6 @@ export class AppComponent {
   
 
   config: Config = {
-    filterOptionsMenu: [
-      {
-        _id: '1',
-        displayName: 'nombre',
-      },
-      {
-        _id: '2',
-        displayName: 'fecha de término',
-      }
-    ],
     queryOptions: [
       {
         type: 'text',
@@ -46,7 +36,8 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        queryOptions: ['igual a', 'contenga', 'no contenga', 'esté vacío'],
+        searchOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+        selectedSearchOption: '',
       },
       {
         _id: '2',
@@ -56,27 +47,19 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        queryOptions: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de']
-      },
-      {
-        _id: '3',
-        displayName: 'prefix',
-        dbName: 'prefix',
-        dataType: 'text',
-        isCustome: false,
-        optionList: [],
-        isDefault: false,
-        queryOptions: ['igual a', 'contenga', 'no contenga', 'esté vacío'],
+        searchOptions: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
+        selectedSearchOption: '',
       },
       {
         _id: '4',
-        displayName: 'La lista',
-        dbName: 'La lista',
+        displayName: 'Lista canasta de frutas',
+        dbName: 'lista_canasta_frutas',
         dataType: 'dropdown',
         isCustome: true,
-        optionList: ['element 1', 'elemento 2', 'elemento 3'],
+        optionList: ['Uva', 'Fresa', 'Limón', 'Naranja'],
         isDefault: false,
-        queryOptions: ['contenga', 'no contenga', 'esté vacío'],
+        searchOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+        selectedSearchOption: '',
       },
       {
         _id: '5',
@@ -86,17 +69,30 @@ export class AppComponent {
         isCustome: false,
         optionList: [{_id: 'aaaaa', displayName: 'Noé Reyes'}, {_id: 'bbbbb', displayName: 'Alexis Rodríguez'}, {_id: 'ccccc', displayName: 'Sergio Alonso'}],
         isDefault: false,
-        queryOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+        searchOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+        selectedSearchOption: '',
       },
       {
         _id: '6',
         displayName: 'Prioridad',
         dbName: 'priority',
-        dataType: 'numeric-dropdown',
+        dataType: 'composite-dropdown',
         isCustome: false,
         optionList: [{_id: '0', displayName: 'No urgente'}, {_id: '1', displayName: 'Urgente'}, {_id: '2', displayName: 'Crítica'}],
         isDefault: false,
-        queryOptions: ['igual a', 'diferente de', 'esté vacío'],
+        searchOptions: ['igual a', 'diferente de', 'entre', 'esté vacío'],
+        selectedSearchOption: '',
+      },
+      {
+        _id: '7',
+        displayName: 'cantidad',
+        dbName: 'amount',
+        dataType: 'number',
+        isCustome: false,
+        optionList: [],
+        isDefault: false,
+        searchOptions: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
+        selectedSearchOption: '',
       },
     ]
   }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
-import { Config, Field, filterOptionMenu } from './models/config';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Config, Field } from './models/config';
 
 export class UserComponent {
   user = new FormGroup({
@@ -25,15 +25,12 @@ export class SmartFilterComponent {
 
   range!: FormGroup;
 
-  filterOptionsMenu: FormControl = this._formBuilder.control('');
+  filterField: FormControl = this._formBuilder.control('');
   queryOptionsMenu: FormControl = this._formBuilder.control('');
-
-  toppings = new FormControl('');
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
   constructor(
     private _formBuilder: FormBuilder,
-  ) {}
+  ) { }
 
   ngOnInit() {
 
@@ -41,29 +38,8 @@ export class SmartFilterComponent {
       start: new FormControl(),
       end: new FormControl()
     });
-    
-
-
-    // this.filterMenuOption = this.config.fields.map(filter => {
-    //   return {
-    //     _id: filter._id,
-    //     displayName: filter.displayName,
-    //   }
-    // })
-
-    // this.fitlerOptionsMenu = this._formBuilder.
 
   }
-
-  /**
-   * string: contenga, no contenga, esté vacío
-   * date: mayor que, menor que, entre, mayor o igual que, menor o igual que, vacío, igual a, diferente de
-   * number: 
-   * 
-   * 
-   * 
-   */
-
 
   get filters(): FormArray {
     return this.filterForm.controls["filters"] as FormArray;
@@ -78,101 +54,88 @@ export class SmartFilterComponent {
       isCustome: [''],
       optionList: [''],
       isDefault: [''],
-      filterOperator: [''],
-      queryOptions: [''],
-      value: [''],
-      values: this._formBuilder.array([]),
+      selectedSearchOption: [''],
+      searchOptions: [''],
+      values: [''],
+      // values: this._formBuilder.array([]),
     });
-    
-    filter.get("displayName")?.valueChanges.subscribe(() =>{
-      filter.get("value")?.setValue("");
-      filter.get("filterOperator")?.setValue("");
-    })
+
+    // ToDo: check
+    // filter.get("displayName")?.valueChanges.subscribe(() =>{
+    //   filter.get("value")?.setValue("");
+    //   filter.get("selectedSearchOption")?.setValue("");
+    // })
 
     this.filters.push(filter);
   }
 
-  setFilterValue(field: Field, filterIndex: number) {
+  // setValue(filterIndex: number) {
 
-    this.filters.at(filterIndex).patchValue(field);
+  //   const valueArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
+  //   valueArray.push(this.filters.at(filterIndex).get('value'))
+  // }
 
+  // setQueryOptions(fieldType: string) {
+  //   console.log("getQueryOptions", fieldType)
+  //   const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
 
-    // valueArray.push(this.filters.at(filterIndex).get('value')?.value)
+  //   if (index === -1) {
+  //     return []
+  //   }
 
+  //   return this.config.queryOptions[index].options;
+  // }
 
-    // let queryOptions = this.filters.at(filterIndex).get('queryOptionsMenu') as FormArray;
-    // queryOptions.clear();
-    // const type: string = this.filters.at(filterIndex).get('dataType')?.value;
-    // queryOptions.push(this._formBuilder.array(this.setQueryOptions(type)))
+  // getQueryOptions(fieldType: string) {
+  //   console.log("getQueryOptions", fieldType)
+  //   const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
 
-  }
+  //   if (index === -1) {
+  //     return []
+  //   }
 
-  setValue(filterIndex: number) {
-  
-    const valueArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-
-    valueArray.push(this.filters.at(filterIndex).get('value'))
-  }
-
-  setQueryOptions(fieldType: string) {
-    console.log("getQueryOptions", fieldType)
-        const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
-    
-        if (index === -1) {
-          return []
-        } 
-    
-        return this.config.queryOptions[index].options;
-      }
-
-  getQueryOptions(fieldType: string) {
-console.log("getQueryOptions", fieldType)
-    const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
-
-    if (index === -1) {
-      return []
-    } 
-
-    return this.config.queryOptions[index].options;
-  }
+  //   return this.config.queryOptions[index].options;
+  // }
 
   // QueryOptionsChange(field: Field, filterIndex: number) {
   //   console.log(field)
 
-  //   this.seFilterOperatorValue(field, filterIndex)
-    
+  //   this.seselectedSearchOptionValue(field, filterIndex)
+
   // }
 
-  // seFilterOperatorValue(field: Field, filterIndex: number) {
+  // seselectedSearchOptionValue(field: Field, filterIndex: number) {
 
   //   let filters: FormArray;
   //   filters = this.filters as FormArray
-  //   filters.at(filterIndex).get('filterOperator');
+  //   filters.at(filterIndex).get('selectedSearchOption');
   // }
-
-
 
   deleteFilter(filterIndex: number) {
     this.filters.removeAt(filterIndex);
   }
 
-  filterOptionsChange(field: Field, filterIndex: number) {
+  filterFieldChange(field: Field, filterIndex: number) {
     this.setFilterValue(field, filterIndex)
   }
 
-  setOption() {
-
+  setFilterValue(field: Field, filterIndex: number) {
+    this.filters.at(filterIndex).patchValue(field);
   }
 
-  setDates(filterIndex: number, date: string){
+  setDates(filterIndex: number, date: string) {
     console.log(this.range.value)
   }
-  
+
   filter() {
     const form = this.filterForm.getRawValue();
-
-    console.log(form)
+    console.log("form filters", form.filters) 
   }
-  
+
+  setInputValue(event: any) {
+    // Prueba para meter los valores en un array
+    console.log(event)
+  }
+
 }

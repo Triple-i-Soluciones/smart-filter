@@ -4,7 +4,6 @@ export class Config {
         Object.assign(this, init);
     }
 
-    filterOptionsMenu: filterOptionMenu[] = [];
     fields: Field[] = [];
     queryOptions: QueryOption[] = [];
 
@@ -23,12 +22,13 @@ export class Field {
     isCustome: boolean = false;
     optionList: string[] | ObjectList[] = [];
     isDefault: boolean = false;
-    queryOptions: string[] = [];
+    searchOptions: string[] = [];
+    selectedSearchOption: string = '';
 }
 
-export class filterOptionMenu {
+export class FilterOptionMenu {
 
-    public constructor(init?: Partial<Field>){
+    public constructor(init?: Partial<FilterOptionMenu>){
         Object.assign(this, init);
     }
 
