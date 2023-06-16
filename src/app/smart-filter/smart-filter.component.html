@@ -57,11 +57,17 @@
                 <input type="text" matInput formControlName="value" (change)="setInputValue($event, i, 'text')">
               </mat-form-field>
             </div>
-            <div *ngSwitchCase="'number'">
+            <div *ngSwitchCase="'number'" class="flex gap-4">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
                 <input type="number" matInput formControlName="value" (change)="setInputValue($event, i, 'number')">
               </mat-form-field>
+              <span *ngIf="filterControl.get('selectedSearchOption')?.value === 'entre'">
+                <mat-form-field>
+                  <mat-label>2do valor</mat-label>
+                  <input type="number" matInput formControlName="additionalValue" (change)="setSecondInputValue($event, i, 'number')">
+                </mat-form-field>
+              </span>
             </div>
             <div *ngSwitchCase="'date'">
               <mat-form-field *ngIf="filterControl.get('selectedSearchOption')?.value !== 'entre'">

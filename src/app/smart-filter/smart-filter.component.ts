@@ -57,6 +57,7 @@ export class SmartFilterComponent {
       selectedSearchOption: [''],
       searchOptions: [''],
       value: [''],
+      additionalValue: [''],
       values: this._formBuilder.array([]),
     });
 
@@ -157,4 +158,15 @@ export class SmartFilterComponent {
     valuesArray.push(this._formBuilder.control(value));
   }
 
+  setSecondInputValue(event: any, filterIndex: number, dataType: string): void {
+
+    const value: string | number = event.target.value;
+
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    if (valuesArray.length > 1) {
+      valuesArray.removeAt(1);
+    }
+    valuesArray.push(this._formBuilder.control(value));
+  }
 }
