@@ -25,9 +25,6 @@ export class SmartFilterComponent {
 
   range!: FormGroup;
 
-  filterField: FormControl = this._formBuilder.control('');
-  tempContr: FormControl = this._formBuilder.control('');
-
   constructor(
     private _formBuilder: FormBuilder,
   ) { }
@@ -60,6 +57,7 @@ export class SmartFilterComponent {
       value: [''],
       additionalValue: [''],
       values: this._formBuilder.array([]),
+      filterSelected: [''],
     });
 
     // ToDo: check
@@ -120,7 +118,7 @@ export class SmartFilterComponent {
     this.filters.removeAt(filterIndex);
   }
 
-  filterFieldChange(field: Field, filterIndex: number): void {
+  filterSelectedChange(field: Field, filterIndex: number): void {
     this.setFilterValue(field, filterIndex)
   }
 
