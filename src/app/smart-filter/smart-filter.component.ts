@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Config, Field } from './models/config';
 
@@ -27,6 +27,7 @@ export class SmartFilterComponent {
 
   constructor(
     private _formBuilder: FormBuilder,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -52,67 +53,16 @@ export class SmartFilterComponent {
       isCustome: [''],
       optionList: [''],
       isDefault: [''],
-      selectedSearchOption: [''],
       searchOptions: [''],
+      selectedSearchOption: [''],
       value: [''],
       additionalValue: [''],
       values: this._formBuilder.array([]),
       filterSelected: [''],
     });
-
-    // ToDo: check
-    // filter.get("displayName")?.valueChanges.subscribe(() =>{
-    //   filter.get("value")?.setValue("");
-    //   filter.get("selectedSearchOption")?.setValue("");
-    // })
     
     this.filters.push(filter);
-
-    /*Call to filterFieldChange*/
   }
-
-  // setValue(filterIndex: number) {
-
-  //   const valueArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-
-  //   valueArray.push(this.filters.at(filterIndex).get('value'))
-  // }
-
-  // setQueryOptions(fieldType: string) {
-  //   console.log("getQueryOptions", fieldType)
-  //   const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
-
-  //   if (index === -1) {
-  //     return []
-  //   }
-
-  //   return this.config.queryOptions[index].options;
-  // }
-
-  // getQueryOptions(fieldType: string) {
-  //   console.log("getQueryOptions", fieldType)
-  //   const index = this.config.queryOptions.findIndex(option => option.type === fieldType);
-
-  //   if (index === -1) {
-  //     return []
-  //   }
-
-  //   return this.config.queryOptions[index].options;
-  // }
-
-  // QueryOptionsChange(field: Field, filterIndex: number) {
-  //   console.log(field)
-
-  //   this.seselectedSearchOptionValue(field, filterIndex)
-
-  // }
-
-  // seselectedSearchOptionValue(field: Field, filterIndex: number) {
-
-  //   let filters: FormArray;
-  //   filters = this.filters as FormArray
-  //   filters.at(filterIndex).get('selectedSearchOption');
-  // }
  
   deleteFilter(filterIndex: number): void {
     this.filters.removeAt(filterIndex);
@@ -123,7 +73,29 @@ export class SmartFilterComponent {
   }
 
   setFilterValue(field: Field, filterIndex: number): void {
+
+    const filterId: string = this.filters.at(filterIndex).value._id;
+    if (filterId !== '') {
+      this.resetValues(filterIndex);
+    }
+    
     this.filters.at(filterIndex).patchValue(field);
+  }
+
+  resetValues(filterIndex: number): void {
+    this.filters.at(filterIndex).get('value')?.setValue('');
+
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    this.resetFormArrays(valuesArray);
+  }
+
+  resetFormArrays(formArray: FormArray) {
+    formArray.clear();
+    formArray.controls.forEach((control) => {
+      if (control instanceof FormArray) {
+        this.resetFormArrays(control);
+      }
+    });
   }
 
   setDates(filterIndex: number, date: string): void {
