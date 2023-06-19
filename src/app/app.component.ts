@@ -48,7 +48,12 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        searchOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+        searchOptions: [
+          {key: 'eq', name:'igual a'}, 
+          {key:'neq', name:'diferente de'}, 
+          {key: 'in', name: 'contenga'}, 
+          {key: 'notin', name:'no contenga'}, 
+          {key: 'empty', name:'esté vacío'}],
         selectedSearchOption: '',
       },
       {
@@ -70,7 +75,13 @@ export class AppComponent {
         isCustome: true,
         optionList: ['Uva', 'Fresa', 'Limón', 'Naranja'],
         isDefault: false,
-        searchOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+        searchOptions: [
+          {key: 'eq', name:'igual a'}, 
+          {key:'neq', name:'diferente de'}, 
+          {key:'in', name:'contenga'}, 
+          {key:'notin', name:'no contenga'}, 
+          {key: 'empty', name:'esté vacío'}
+        ],
         selectedSearchOption: '',
       },
       {
@@ -81,7 +92,13 @@ export class AppComponent {
         isCustome: false,
         optionList: [{_id: 'aaaaa', displayName: 'Noé Reyes'}, {_id: 'bbbbb', displayName: 'Alexis Rodríguez'}, {_id: 'ccccc', displayName: 'Sergio Alonso'}],
         isDefault: false,
-        searchOptions: ['igual a', 'diferente de', 'contenga', 'no contenga', 'esté vacío'],
+        searchOptions: [
+          {key: 'eq', name:'igual a'}, 
+          {key: 'neq', name:'diferente de'}, 
+          {key: 'in', name:'contenga'},
+          {key: 'notin', name:'no contenga'},
+          {key: 'empty', name:'esté vacío'}
+        ],
         selectedSearchOption: '',
       },
       {
@@ -92,7 +109,11 @@ export class AppComponent {
         isCustome: false,
         optionList: [{_id: '0', displayName: 'No urgente'}, {_id: '1', displayName: 'Urgente'}, {_id: '2', displayName: 'Crítica'}],
         isDefault: false,
-        searchOptions: ['igual a', 'diferente de', 'entre', 'esté vacío'],
+        searchOptions: [
+          {key:'eq', name:'igual a'}, 
+          {key: 'neq', name:'diferente de'}, 
+          {key: 'btwn', name:'entre'}, 
+          {key: 'empty', name: 'esté vacío'}],
         selectedSearchOption: '',
       },
       {
@@ -103,7 +124,15 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        searchOptions: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
+        searchOptions: [ 
+          {key: 'eq', name: 'igual a'},
+          {key: 'neq', name: 'diferente de'},
+          {key: 'gr', name: 'mayor que'},
+          {key: 'le', name: 'menor que'},
+          {key: 'geq', name: 'mayor o igual que'},
+          {key: 'leq', name: 'menor o igual que'},
+          {key: 'empty', name: 'vacío'},
+          {key: 'btwn', name: 'entre'}],
         selectedSearchOption: '',
       },
     ]

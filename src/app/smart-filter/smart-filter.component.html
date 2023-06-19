@@ -62,7 +62,7 @@
                 <mat-label>Valor</mat-label>
                 <input type="number" matInput formControlName="value" (change)="setInputValue($event, i, 'number')">
               </mat-form-field>
-              <span *ngIf="filterControl.get('selectedSearchOption')?.value === 'entre'">
+              <span *ngIf="filterControl.get('selectedSearchOption')?.value === 'btwn'">
                 <mat-form-field>
                   <mat-label>2do valor</mat-label>
                   <input type="number" matInput formControlName="additionalValue" (change)="setSecondInputValue($event, i, 'number')">
@@ -70,7 +70,7 @@
               </span>
             </div>
             <div *ngSwitchCase="'date'">
-              <mat-form-field *ngIf="filterControl.get('selectedSearchOption')?.value !== 'entre'">
+              <mat-form-field *ngIf="filterControl.get('selectedSearchOption')?.value !== 'btwn'">
                 <mat-label>Fecha</mat-label>
                 <input matInput 
                 [matDatepicker]="picker" 
@@ -82,7 +82,7 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
-              <mat-form-field *ngIf="filterControl.get('selectedSearchOption')?.value === 'entre'">
+              <mat-form-field *ngIf="filterControl.get('selectedSearchOption')?.value === 'btwn'">
                 <mat-label>Rango de fechas</mat-label>
                 <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
                   <input matStartDate formControlName="start" placeholder="Start date"
