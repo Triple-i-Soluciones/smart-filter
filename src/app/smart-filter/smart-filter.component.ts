@@ -173,16 +173,14 @@ export class SmartFilterComponent {
   }
 
   setDropdownElementChange(value: any, filterIndex: number, dataType: string): void{
-
-    //const value: string | number | Date = event.target.value;
-
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-
     if (valuesArray.length > 0) {
       valuesArray.clear();
     }
-    valuesArray.push(this._formBuilder.control(value));
-    console.log(value);
+    value.forEach((e:string)=>{
+      console.log(e)
+      valuesArray.push(this._formBuilder.control(e));
+    })   
   }
 
 }
