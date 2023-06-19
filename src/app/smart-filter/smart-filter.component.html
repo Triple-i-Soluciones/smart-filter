@@ -96,8 +96,8 @@
                 <mat-select formControlName="value" (selectionChange)="setDropdownElementChange($event.value, i, 'dropdown')" multiple>
                   <mat-option 
                   *ngFor="let option of filterControl.get('optionList')?.value let i = index"
-                  [value]="option._id"
-                  >{{option.displayName}}</mat-option>
+                  [value]="option"
+                  >{{option}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>

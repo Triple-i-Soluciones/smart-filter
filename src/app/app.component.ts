@@ -73,11 +73,7 @@ export class AppComponent {
         dbName: 'lista_canasta_frutas',
         dataType: 'dropdown',
         isCustome: true,
-        optionList: [
-          {_id: '1000', displayName:'Uva'}, 
-          {_id: '0100', displayName: 'Fresa'}, 
-          {_id: '0010', displayName: 'Limón'}, 
-          {_id: '0001', displayName: 'Naranja'}],
+        optionList: ['Uva', 'Fresa', 'Limón', 'Naranja'],
         isDefault: false,
         searchOptions: [
           {key: 'eq', name:'igual a'}, 
