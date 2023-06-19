@@ -33,7 +33,6 @@ export class SmartFilterComponent {
   ) { }
 
   ngOnInit() {
-
     this.range = new FormGroup({
       start: new FormControl(),
       end: new FormControl()
@@ -46,6 +45,8 @@ export class SmartFilterComponent {
   }
 
   addFilter(): void {
+    
+    
     const filter = this._formBuilder.group({
       _id: [''],
       displayName: [''],
@@ -66,8 +67,10 @@ export class SmartFilterComponent {
     //   filter.get("value")?.setValue("");
     //   filter.get("selectedSearchOption")?.setValue("");
     // })
-
+    
     this.filters.push(filter);
+
+    /*Call to filterFieldChange*/
   }
 
   // setValue(filterIndex: number) {
@@ -112,7 +115,7 @@ export class SmartFilterComponent {
   //   filters = this.filters as FormArray
   //   filters.at(filterIndex).get('selectedSearchOption');
   // }
-
+ 
   deleteFilter(filterIndex: number): void {
     this.filters.removeAt(filterIndex);
   }
@@ -169,6 +172,19 @@ export class SmartFilterComponent {
     if ((valuesArray.length > 0 && dateRange==="start")) valuesArray.clear();
 
     if (value !== null) valuesArray.push(this._formBuilder.control(value));
+  }
+
+  setDropdownElementChange(value: any, filterIndex: number, dataType: string): void{
+
+    //const value: string | number | Date = event.target.value;
+
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    if (valuesArray.length > 0) {
+      valuesArray.clear();
+    }
+    valuesArray.push(this._formBuilder.control(value));
+    console.log(value);
   }
 
 }
