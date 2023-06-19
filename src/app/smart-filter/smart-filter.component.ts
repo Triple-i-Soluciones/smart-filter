@@ -76,20 +76,21 @@ export class SmartFilterComponent {
 
     const filterId: string = this.filters.at(filterIndex).value._id;
     if (filterId !== '') {
-      this.resetValues(filterIndex);
+      this.resetFilterValues(filterIndex);
     }
     
     this.filters.at(filterIndex).patchValue(field);
   }
 
-  resetValues(filterIndex: number): void {
+  resetFilterValues(filterIndex: number): void {
     this.filters.at(filterIndex).get('value')?.setValue('');
+    this.filters.at(filterIndex).get('additionalValue')?.setValue('');
 
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
     this.resetFormArrays(valuesArray);
   }
 
-  resetFormArrays(formArray: FormArray) {
+  resetFormArrays(formArray: FormArray): void {
     formArray.clear();
     formArray.controls.forEach((control) => {
       if (control instanceof FormArray) {
@@ -160,18 +161,30 @@ export class SmartFilterComponent {
   }
 
   checkForEmptyOptionSelected(filterIndex: number): void {
+    const isEmptySelected: boolean = this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'empty';
+
+    if(isEmptySelected) {
+      this.resetFilterValues(filterIndex);
+      this.disableFilterValues(filterIndex);
+    } else {
+      this.enableFilterValues(filterIndex);
+    }
+  }
+
+  disableFilterValues(filterIndex: number): void {
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
-    if(this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'empty') {
-      this.resetValues(filterIndex);
-      
-      this.filters.at(filterIndex).get('value')?.disable();
-      valuesArray.disable();
+    this.filters.at(filterIndex).get('value')?.disable();
+    this.filters.at(filterIndex).get('additionalValue')?.disable();
+    valuesArray.disable();
+  }
 
-    } else {
-      this.filters.at(filterIndex).get('value')?.enable();
-      valuesArray.enable();
-    }
+  enableFilterValues(filterIndex: number): void {
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    this.filters.at(filterIndex).get('value')?.enable();
+    this.filters.at(filterIndex).get('additionalValue')?.enable();
+    valuesArray.enable();
   }
 
 }
