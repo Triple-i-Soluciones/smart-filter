@@ -155,4 +155,23 @@ export class SmartFilterComponent {
     })   
   }
 
+  searchOptionSelectedChange(filterIndex: number): void {
+    this.checkForEmptyOptionSelected(filterIndex);
+  }
+
+  checkForEmptyOptionSelected(filterIndex: number): void {
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    if(this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'empty') {
+      this.resetValues(filterIndex);
+      
+      this.filters.at(filterIndex).get('value')?.disable();
+      valuesArray.disable();
+
+    } else {
+      this.filters.at(filterIndex).get('value')?.enable();
+      valuesArray.enable();
+    }
+  }
+
 }
