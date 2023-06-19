@@ -22,7 +22,7 @@ export class Field {
     isCustome: boolean = false;
     optionList: string[] | ObjectList[] = [];
     isDefault: boolean = false;
-    searchOptions: string[] = [];
+    searchOptions: any;
     selectedSearchOption: string = '';
 }
 

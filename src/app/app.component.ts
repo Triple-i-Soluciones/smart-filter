@@ -9,7 +9,19 @@ import { Config } from './smart-filter/models/config';
 export class AppComponent {
   title = 'smart-filter';
 
-  
+  operators = [
+    {key: 'eq', name: 'igual a'},
+    {key: 'neq', name: 'diferente de'},
+    {key: 'in', name: 'contenga'},
+    {key: 'notin', name: 'no contenga'},
+    {key: 'gr', name: 'mayor que'},
+    {key: 'le', name: 'menor que'},
+    {key: 'geq', name: 'mayor o igual que'},
+    {key: 'leq', name: 'menor o igual que'},
+    {key: 'empty', name: 'vacío'},
+    {key: 'btwn', name: 'entre'},
+  ]
+   
 
   config: Config = {
     queryOptions: [
@@ -47,7 +59,7 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        searchOptions: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
+        searchOptions: this.operators,
         selectedSearchOption: '',
       },
       {
