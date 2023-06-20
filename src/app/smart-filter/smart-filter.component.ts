@@ -6,14 +6,6 @@ interface FilterField extends Field {
   available: boolean;
 }
 
-
-export class UserComponent {
-  user = new FormGroup({
-    name: new FormControl(''),
-    skills: new FormArray([])
-  });
-}
-
 @Component({
   selector: 'app-smart-filter',
   templateUrl: './smart-filter.component.html',
@@ -47,7 +39,6 @@ export class SmartFilterComponent {
       }
     });
 
-    console.log("fields", this.fields)
     this.range = new FormGroup({
       start: new FormControl([ Validators.required]),
       end: new FormControl([Validators.required]),
@@ -59,10 +50,7 @@ export class SmartFilterComponent {
     return this.filterForm.controls["filters"] as FormArray;
   }
 
-
-  addFilter(): void {
-    
-    
+  addFilter(): void {     
     const filter = this._formBuilder.group({
       _id: [''],
       displayName: [''],
@@ -131,7 +119,6 @@ export class SmartFilterComponent {
       this.filterForm.markAllAsTouched();
     }
     this.filterEvent.emit(form);
-        //console.log("form filters", form.filters) 
   }
 
   setInputValue(event: any, filterIndex: number, dataType: string): void {
