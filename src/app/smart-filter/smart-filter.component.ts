@@ -55,6 +55,7 @@ export class SmartFilterComponent {
       optionList: [''],
       isDefault: [''],
       searchOptions: [''],
+      booleanOption: [''],
       selectedSearchOption: ['', Validators.required],
       value: ['', Validators.required],
       additionalValue: ['', Validators.required],
@@ -151,12 +152,21 @@ export class SmartFilterComponent {
 
   setDropdownElementChange(value: any, filterIndex: number, dataType: string): void{
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    let ifTrueFalse: boolean = this.filters.at(filterIndex).get('booleanOption')?.value;
+    let arrayValueCheckBox: {name: string, value: boolean}[] = [];
+
+    for(let i = 0; i < value.length; i++){
+      let valueCheckBox: {name: string, value: boolean} = {name: value[i], value: ifTrueFalse};
+      arrayValueCheckBox.push(valueCheckBox);
+    }
+    
     if (valuesArray.length > 0) {
       valuesArray.clear();
     }
-    value.forEach((selectedOption:string)=>{
+
+    arrayValueCheckBox.forEach((selectedOption: { name: string; value: boolean }) => {
       valuesArray.push(this._formBuilder.control(selectedOption));
-    })   
+    });  
   }
 
   searchOptionSelectedChange(filterIndex: number): void {
