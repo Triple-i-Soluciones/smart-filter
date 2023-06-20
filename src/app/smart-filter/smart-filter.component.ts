@@ -2,11 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { FormArray, FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { Config, Field } from './models/config';
 
-export class UserComponent {
-  user = new FormGroup({
-    name: new FormControl(''),
-    skills: new FormArray([])
-  });
+interface FilterField extends Field {
+  available: boolean;
 }
 
 @Component({
@@ -26,12 +23,22 @@ export class SmartFilterComponent {
   range!: FormGroup;
   prueba: boolean = false;
 
+  fields: FilterField[] = [];
+
   constructor(
     private _formBuilder: FormBuilder,
     private _changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
+
+    this.fields = structuredClone(this.config.fields).map((field: Field) => {
+      return {
+        ...field,
+        available: true,
+      }
+    });
+
     this.range = new FormGroup({
       start: new FormControl([ Validators.required]),
       end: new FormControl([Validators.required]),
@@ -43,9 +50,7 @@ export class SmartFilterComponent {
     return this.filterForm.controls["filters"] as FormArray;
   }
 
-  addFilter(): void {
-    
-    
+  addFilter(): void {     
     const filter = this._formBuilder.group({
       _id: [''],
       displayName: [''],
@@ -68,6 +73,8 @@ export class SmartFilterComponent {
  
   deleteFilter(filterIndex: number): void {
     this.filters.removeAt(filterIndex);
+
+    this.checkFiltersAvailability();
   }
 
   filterSelectedChange(field: Field, filterIndex: number): void {
@@ -75,13 +82,14 @@ export class SmartFilterComponent {
   }
 
   setFilterValue(field: Field, filterIndex: number): void {
-
     const filterId: string = this.filters.at(filterIndex).value._id;
     if (filterId !== '') {
       this.resetFilterValues(filterIndex);
     }
     
     this.filters.at(filterIndex).patchValue(field);
+
+    this.checkFiltersAvailability();
   }
 
   resetFilterValues(filterIndex: number): void {
@@ -107,7 +115,6 @@ export class SmartFilterComponent {
       this.filterForm.markAllAsTouched();
     }
     this.filterEvent.emit(form);
-        //console.log("form filters", form.filters) 
   }
 
   setInputValue(event: any, filterIndex: number, dataType: string): void {
@@ -221,7 +228,19 @@ export class SmartFilterComponent {
         valuesArray.push(this._formBuilder.control(selectedOption));
       }); 
     }
-
   }
+  
+  checkFiltersAvailability(): void {
+    const filters: FilterField[] = this.filterForm.getRawValue().filters;
+    const selectedFilterIds: string[] = filters.filter(element => !element.available && element._id !== '').map(element => element._id);
 
+    this.fields.forEach((element, i) => {
+      let isAvailable: boolean = true;
+      if (selectedFilterIds.includes(element._id)) {
+        isAvailable = false
+      } 
+      this.fields[i].available = isAvailable;
+    });
+  }
+  
 }

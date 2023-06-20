@@ -1,24 +1,4 @@
-<div class="mb-10">
-  <!-- <p>
-        CONFIG: 
-        {{config | json}}
-    </p> -->
-
-  <!-- <p>
-        FORM: 
-        {{filterForm.value | json}}
-    </p> -->
-
-
-  <p>
-    FILTERS:
-    {{filters.value | json}}
-  </p>
-
-</div>
-
-
-<div>
+<div class="p-6">
 
   <div [formGroup]="filterForm">
 
@@ -31,9 +11,11 @@
             <mat-label for="">Nombre: </mat-label>
             <mat-select formControlName="filterSelected" (selectionChange)="filterSelectedChange($event.value, i)">
               <mat-option>--</mat-option>
-              <mat-option *ngFor="let field of config.fields" [value]="field"> 
-                {{field.displayName}}
-              </mat-option>
+              <ng-container *ngFor="let field of fields">
+                <mat-option [value]="field" [disabled]="!field.available"> 
+                  {{field.displayName}}
+                </mat-option>
+              </ng-container>
             </mat-select>
             <mat-error *ngIf="filterControl.get('filterSelected')?.hasError('required')">Selecciona una opción</mat-error>
           </mat-form-field>
@@ -165,6 +147,6 @@
   <button [type]="'button'" (click)="addFilter()">+ Agregar filtro</button>
 </div>
 
-<div class="mt-10">
+<div class="mt-10 p-6">
   <button class="border border-gray-300 px-2 py-2" [type]="'button'" (click)="filter()">Aplicar filtro</button>
 </div>
