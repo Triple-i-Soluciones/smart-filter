@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { Config, Field } from './models/config';
 
@@ -17,9 +17,9 @@ export class UserComponent {
 })
 export class SmartFilterComponent {
   @Input() config: Config = new Config();
+  @Output() filterEvent: EventEmitter<FormArray> = new EventEmitter<FormArray>();
 
   filterForm: FormGroup = this._formBuilder.group({
-    config: "Aquí van las configs",
     filters: this._formBuilder.array([]),
   });
 
@@ -57,10 +57,10 @@ export class SmartFilterComponent {
       searchOptions: [''],
       booleanOption: [''],
       selectedSearchOption: ['', Validators.required],
-      value: ['', Validators.required],
-      additionalValue: ['', Validators.required],
-      values: this._formBuilder.array([]),
-      filterSelected: ['', Validators.required],
+      value:                ['', Validators.required],
+      additionalValue:      ['', Validators.required],
+      values:               this._formBuilder.array([]),
+      filterSelected:       ['', Validators.required],
     });
     
     this.filters.push(filter);
@@ -101,16 +101,13 @@ export class SmartFilterComponent {
     });
   }
 
-  setDates(filterIndex: number, date: string): void {
-    console.log(this.range.value)
-  }
-
   filter(): void {
     const form = this.filterForm.getRawValue();
     if (!this.filterForm.valid){
       this.filterForm.markAllAsTouched();
     }
-        console.log("form filters", form.filters) 
+    this.filterEvent.emit(form);
+        //console.log("form filters", form.filters) 
   }
 
   setInputValue(event: any, filterIndex: number, dataType: string): void {
@@ -141,6 +138,11 @@ export class SmartFilterComponent {
 
     const value: string = event.target.value;
 
+    //restart form validators if date range is selected more than once
+    if(this.range.get('end')?.value == null){
+      this.range.get('end')?.setValue(FormGroup, Validators.required)      
+    } 
+    
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
     if (valuesArray.length > 0 && filterOption !== "entre") valuesArray.clear();
