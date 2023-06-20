@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { Config, Field } from './models/config';
 
@@ -22,6 +22,7 @@ export class UserComponent {
 })
 export class SmartFilterComponent {
   @Input() config: Config = new Config();
+  @Output() filterEvent: EventEmitter<FormArray> = new EventEmitter<FormArray>();
 
   filterForm: FormGroup = this._formBuilder.group({
     fields: this._formBuilder.array([]),
@@ -66,14 +67,15 @@ export class SmartFilterComponent {
     
     
     const filter = this._formBuilder.group({
-      _id:                  [''],
-      displayName:          [''],
-      dbName:               [''],
-      dataType:             [''],
-      isCustome:            [''],
-      optionList:           [''],
-      isDefault:            [''],
-      searchOptions:        [''],
+      _id: [''],
+      displayName: [''],
+      dbName: [''],
+      dataType: [''],
+      isCustome: [''],
+      optionList: [''],
+      isDefault: [''],
+      searchOptions: [''],
+      booleanOption: ['', Validators.required],
       selectedSearchOption: ['', Validators.required],
       value:                ['', Validators.required],
       additionalValue:      ['', Validators.required],
@@ -131,7 +133,8 @@ export class SmartFilterComponent {
     if (!this.filterForm.valid){
       this.filterForm.markAllAsTouched();
     }
-        console.log("form filters", form.filters) 
+    this.filterEvent.emit(form);
+        //console.log("form filters", form.filters) 
   }
 
   setInputValue(event: any, filterIndex: number, dataType: string): void {
@@ -178,12 +181,21 @@ export class SmartFilterComponent {
 
   setDropdownElementChange(value: any, filterIndex: number, dataType: string): void{
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    let isTrueFalse: boolean = this.filters.at(filterIndex).get('booleanOption')?.value;
+    let arrayValueCheckBox: {name: string, value: boolean}[] = [];
+
+    for(let i = 0; i < value.length; i++){
+      let valueCheckBox: {name: string, value: boolean} = {name: value[i], value: isTrueFalse};
+      arrayValueCheckBox.push(valueCheckBox);
+    }
+    
     if (valuesArray.length > 0) {
       valuesArray.clear();
     }
-    value.forEach((selectedOption:string)=>{
+
+    arrayValueCheckBox.forEach((selectedOption: { name: string; value: boolean }) => {
       valuesArray.push(this._formBuilder.control(selectedOption));
-    })   
+    });  
   }
 
   searchOptionSelectedChange(filterIndex: number): void {
