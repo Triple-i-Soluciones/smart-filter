@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Config } from './smart-filter/models/config';
+import { Config, SearchOption } from './smart-filter/models/config';
 
 @Component({
   selector: 'app-root',
@@ -9,36 +9,22 @@ import { Config } from './smart-filter/models/config';
 export class AppComponent {
   title = 'smart-filter';
 
-  operators = [
-    {key: 'eq', name: 'igual a'},
-    {key: 'neq', name: 'diferente de'},
-    {key: 'in', name: 'contenga'},
-    {key: 'notin', name: 'no contenga'},
-    {key: 'gr', name: 'mayor que'},
-    {key: 'le', name: 'menor que'},
-    {key: 'geq', name: 'mayor o igual que'},
-    {key: 'leq', name: 'menor o igual que'},
-    {key: 'empty', name: 'vacío'},
-    {key: 'btwn', name: 'entre'},
-  ]
-   
+  // operators = [
+  //   {key: 'eq', name: 'igual a'},
+  //   {key: 'neq', name: 'diferente de'},
+  //   {key: 'in', name: 'contenga'},
+  //   {key: 'notin', name: 'no contenga'},
+  //   {key: 'gr', name: 'mayor que'},
+  //   {key: 'le', name: 'menor que'},
+  //   {key: 'geq', name: 'mayor o igual que'},
+  //   {key: 'leq', name: 'menor o igual que'},
+  //   {key: 'empty', name: 'vacío'},
+  //   {key: 'btwn', name: 'entre'},
+  //   {key: 'alls', name:'todas seleccionadas'}, 
+  //   {key: 'nones', name:'ninguna seleccionada'}, 
+  // ]
 
   config: Config = {
-    queryOptions: [
-      {
-        type: 'text',
-        options: ['contenga', 'no contenga', 'esté vacío'],
-      },
-      {
-        // TODO: type: 'date' || 'number', evaluar si se usa así más adelante
-        type: 'date',
-        options: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
-      },
-      {
-        type: 'number',
-        options: ['mayor que', 'menor que', 'entre', 'mayor o igual que', 'menor o igual que', 'vacío', 'igual a', 'diferente de'],
-      }
-    ],
     fields: [
       {
         _id: '1',
@@ -53,7 +39,8 @@ export class AppComponent {
           {key:'neq', name:'diferente de'}, 
           {key: 'in', name: 'contenga'}, 
           {key: 'notin', name:'no contenga'}, 
-          {key: 'empty', name:'esté vacío'}],
+          {key: 'empty', name:'vacío'},
+        ],
         selectedSearchOption: '',
       },
       {
@@ -64,7 +51,18 @@ export class AppComponent {
         isCustome: false,
         optionList: [],
         isDefault: false,
-        searchOptions: this.operators,
+        searchOptions: [
+          {key: 'eq', name: 'igual a'},
+          {key: 'neq', name: 'diferente de'},
+          {key: 'in', name: 'contenga'},
+          {key: 'notin', name: 'no contenga'},
+          {key: 'gr', name: 'mayor que'},
+          {key: 'le', name: 'menor que'},
+          {key: 'geq', name: 'mayor o igual que'},
+          {key: 'leq', name: 'menor o igual que'},
+          {key: 'btwn', name: 'entre'},
+          {key: 'empty', name: 'vacío'},
+        ],
         selectedSearchOption: '',
       },
       {
@@ -80,7 +78,7 @@ export class AppComponent {
           {key:'neq', name:'diferente de'}, 
           {key:'in', name:'contenga'}, 
           {key:'notin', name:'no contenga'}, 
-          {key: 'empty', name:'esté vacío'}
+          {key: 'empty', name:'vacío'},
         ],
         selectedSearchOption: '',
       },
@@ -97,7 +95,7 @@ export class AppComponent {
           {key: 'neq', name:'diferente de'}, 
           {key: 'in', name:'contenga'},
           {key: 'notin', name:'no contenga'},
-          {key: 'empty', name:'esté vacío'}
+          {key: 'empty', name:'vacío'},
         ],
         selectedSearchOption: '',
       },
@@ -110,10 +108,11 @@ export class AppComponent {
         optionList: [{_id: '0', displayName: 'No urgente'}, {_id: '1', displayName: 'Urgente'}, {_id: '2', displayName: 'Crítica'}],
         isDefault: false,
         searchOptions: [
-          {key:'eq', name:'igual a'}, 
-          {key: 'neq', name:'diferente de'}, 
-          {key: 'btwn', name:'entre'}, 
-          {key: 'empty', name: 'esté vacío'}],
+          {key: 'eq', name: 'igual a'},
+          {key: 'neq', name: 'diferente de'},
+          {key: 'btwn', name: 'entre'},
+          {key: 'empty', name: 'vacío'},
+        ],
         selectedSearchOption: '',
       },
       {
@@ -131,8 +130,9 @@ export class AppComponent {
           {key: 'le', name: 'menor que'},
           {key: 'geq', name: 'mayor o igual que'},
           {key: 'leq', name: 'menor o igual que'},
+          {key: 'btwn', name: 'entre'},
           {key: 'empty', name: 'vacío'},
-          {key: 'btwn', name: 'entre'}],
+        ],
         selectedSearchOption: '',
       },
     ]
