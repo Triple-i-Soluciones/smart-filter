@@ -40,7 +40,7 @@
 
           <mat-form-field>
             <mat-label for="">Opción de búsqueda: </mat-label>
-            <mat-select formControlName="selectedSearchOption">
+            <mat-select formControlName="selectedSearchOption" (selectionChange)="searchOptionSelectedChange(i)" placeholder="Select">
               <mat-option *ngFor="let option of filterControl.get('searchOptions')?.value" [value]="option.key">
                 {{option.name}}
               </mat-option>
