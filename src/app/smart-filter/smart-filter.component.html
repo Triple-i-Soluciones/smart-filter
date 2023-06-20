@@ -30,10 +30,12 @@
           <mat-form-field>
             <mat-label for="">Nombre: </mat-label>
             <mat-select formControlName="filterSelected" (selectionChange)="filterSelectedChange($event.value, i)">
+              <mat-option>--</mat-option>
               <mat-option *ngFor="let field of config.fields" [value]="field"> 
                 {{field.displayName}}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="filterControl.get('filterSelected')?.hasError('required')">Selecciona una opción</mat-error>
           </mat-form-field>
 
           <mat-form-field>
@@ -43,6 +45,7 @@
                 {{option.name}}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="filterControl.get('selectedSearchOption')?.hasError('required')">Selecciona una opción</mat-error>
           </mat-form-field>
 
           <!-- HTML element according field type -->
@@ -51,17 +54,20 @@
               <mat-form-field>
                 <mat-label>Valor</mat-label>
                 <input type="text" matInput formControlName="value" (change)="setInputValue($event, i, 'text')">
+                <mat-error *ngIf="filterControl.get('value')?.hasError('required')">Campo requerido</mat-error>
               </mat-form-field>
             </div>
             <div *ngSwitchCase="'number'" class="flex gap-4">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
                 <input type="number" matInput formControlName="value" (change)="setInputValue($event, i, 'number')">
+                <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Campo requerido</mat-error>
               </mat-form-field>
               <span *ngIf="filterControl.get('selectedSearchOption')?.value === 'btwn'">
                 <mat-form-field>
                   <mat-label>2do valor</mat-label>
                   <input type="number" matInput formControlName="additionalValue" (change)="setSecondInputValue($event, i, 'number')">
+                  <mat-error *ngIf="filterControl.get('additionalValue')?.hasError('required')">Campo requerido</mat-error>
                 </mat-form-field>
               </span>
             </div>
@@ -74,6 +80,7 @@
                 formControlName="value"
                 (dateChange)="setDateValue($event, i, filterControl.get('selectedSearchOption')?.value)"
                 >
+                <mat-error *ngIf="filterControl.get('additionalValue')?.hasError('required')">Selecciona una fecha</mat-error>
                 <mat-hint>DD/MM/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
@@ -99,6 +106,7 @@
                   [value]="option"
                   >{{option}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona al menos una opción</mat-error>
               </mat-form-field>
             </div>
             <div *ngSwitchCase="'checklist'">
@@ -111,6 +119,7 @@
                   <mat-option *ngFor="let option of filterControl.get('optionList')?.value"
                     [value]="option._id">{{option.displayName}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="filterControl.get('additionalValue')?.hasError('required')">Selecciona al menos una opción</mat-error>
               </mat-form-field>
             </div>
             <div *ngSwitchCase="'composite-dropdown'">
@@ -120,6 +129,7 @@
                   <mat-option *ngFor="let option of filterControl.get('optionList')?.value let i = index"
                     [value]="option._id">{{option.displayName}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona al menos una opción</mat-error>
               </mat-form-field>
             </div>
 

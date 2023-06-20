@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { Config, Field } from './models/config';
 
 export class UserComponent {
@@ -24,6 +24,7 @@ export class SmartFilterComponent {
   });
 
   range!: FormGroup;
+  prueba: boolean = false;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -32,8 +33,8 @@ export class SmartFilterComponent {
 
   ngOnInit() {
     this.range = new FormGroup({
-      start: new FormControl(),
-      end: new FormControl()
+      start: new FormControl([ Validators.required]),
+      end: new FormControl([Validators.required]),
     });
 
   }
@@ -54,11 +55,11 @@ export class SmartFilterComponent {
       optionList: [''],
       isDefault: [''],
       searchOptions: [''],
-      selectedSearchOption: [''],
-      value: [''],
-      additionalValue: [''],
+      selectedSearchOption: ['', Validators.required],
+      value: ['', Validators.required],
+      additionalValue: ['', Validators.required],
       values: this._formBuilder.array([]),
-      filterSelected: [''],
+      filterSelected: ['', Validators.required],
     });
     
     this.filters.push(filter);
@@ -69,7 +70,7 @@ export class SmartFilterComponent {
   }
 
   filterSelectedChange(field: Field, filterIndex: number): void {
-    this.setFilterValue(field, filterIndex)
+    this.setFilterValue(field, filterIndex);
   }
 
   setFilterValue(field: Field, filterIndex: number): void {
@@ -104,7 +105,10 @@ export class SmartFilterComponent {
 
   filter(): void {
     const form = this.filterForm.getRawValue();
-    console.log("form filters", form.filters) 
+    if (!this.filterForm.valid){
+      this.filterForm.markAllAsTouched();
+    }
+        console.log("form filters", form.filters) 
   }
 
   setInputValue(event: any, filterIndex: number, dataType: string): void {
@@ -149,9 +153,8 @@ export class SmartFilterComponent {
     if (valuesArray.length > 0) {
       valuesArray.clear();
     }
-    value.forEach((e:string)=>{
-      console.log(e)
-      valuesArray.push(this._formBuilder.control(e));
+    value.forEach((selectedOption:string)=>{
+      valuesArray.push(this._formBuilder.control(selectedOption));
     })   
   }
 
