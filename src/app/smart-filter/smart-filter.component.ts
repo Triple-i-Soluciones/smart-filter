@@ -55,7 +55,7 @@ export class SmartFilterComponent {
       optionList: [''],
       isDefault: [''],
       searchOptions: [''],
-      booleanOption: [''],
+      booleanOption: ['', Validators.required],
       selectedSearchOption: ['', Validators.required],
       value:                ['', Validators.required],
       additionalValue:      ['', Validators.required],
