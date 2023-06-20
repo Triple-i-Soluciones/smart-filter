@@ -154,18 +154,11 @@ export class SmartFilterComponent {
 
   setDropdownElementChange(value: any, filterIndex: number, dataType: string): void{
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-    let isTrueFalse: boolean = this.filters.at(filterIndex).get('booleanOption')?.value;
-
-    const arrayValueCheckBox: { name: string; value: boolean }[] = value.map((name: string) => ({
-      name: name,
-      value: isTrueFalse,
-    }));
-
     valuesArray.clear();
 
-    arrayValueCheckBox.forEach((selectedOption: { name: string; value: boolean }) => {
+    value.forEach((selectedOption:string)=>{
       valuesArray.push(this._formBuilder.control(selectedOption));
-    });  
+    })   
   }
 
   searchOptionSelectedChange(filterIndex: number): void {
@@ -197,6 +190,38 @@ export class SmartFilterComponent {
     this.filters.at(filterIndex).get('value')?.enable();
     this.filters.at(filterIndex).get('additionalValue')?.enable();
     valuesArray.enable();
+  }
+
+  setCheckListElementChange(value: any, filterIndex: number, dataType: string): void{
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    let isTrueFalse: boolean = this.filters.at(filterIndex).get('booleanOption')?.value;
+
+    const arrayValueCheckBox: { name: string; value: boolean }[] = value.map((name: string) => ({
+      name: name,
+      value: isTrueFalse,
+    }));
+
+    valuesArray.clear();
+
+    arrayValueCheckBox.forEach((selectedOption: { name: string; value: boolean }) => {
+      valuesArray.push(this._formBuilder.control(selectedOption));
+    });  
+  }
+
+  changeOptionSelect(value: boolean, filterIndex: number){
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    if(valuesArray.length > 0){
+      valuesArray.clear();
+      let selections: string[] = this.filters.at(filterIndex).get('value')?.value;
+      const arrayValueCheckBox: { name: string; value: boolean }[] = selections.map((name: string) => ({
+        name: name,
+        value: value,
+      }));
+      arrayValueCheckBox.forEach((selectedOption: { name: string; value: boolean }) => {
+        valuesArray.push(this._formBuilder.control(selectedOption));
+      }); 
+    }
+
   }
 
 }

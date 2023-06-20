@@ -97,15 +97,7 @@
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
             </div>
-            <div *ngSwitchCase="'dropdown'" class="flex gap-4">
-              <mat-form-field>
-                <mat-label>Tipo de Selección</mat-label>
-                <mat-select formControlName="booleanOption">
-                  <mat-option [value]="true">true</mat-option>
-                  <mat-option [value]="false">false</mat-option>
-                </mat-select>
-                <mat-error *ngIf="filterControl.get('booleanOption')?.hasError('required')" >Selecciona al menos una opción</mat-error>
-              </mat-form-field>
+            <div *ngSwitchCase="'dropdown'">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
                 <mat-select formControlName="value" (selectionChange)="setDropdownElementChange($event.value, i, 'dropdown')" multiple>
@@ -117,8 +109,24 @@
                 <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona al menos una opción</mat-error>
               </mat-form-field>
             </div>
-            <div *ngSwitchCase="'checklist'">
-              <!-- ToDo -->
+            <div *ngSwitchCase="'checklist'" class="flex gap-4">
+              <mat-form-field>
+                <mat-label>Tipo de Selección</mat-label>
+                <mat-select formControlName="booleanOption" (selectionChange)="changeOptionSelect($event.value, i)">
+                  <mat-option [value]="true">true</mat-option>
+                  <mat-option [value]="false">false</mat-option>
+                </mat-select>
+                <mat-error *ngIf="filterControl.get('booleanOption')?.hasError('required')" >Selecciona al menos una opción</mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Valor</mat-label>
+                <mat-select formControlName="value" (selectionChange)="setCheckListElementChange($event.value, i, 'checklist')" multiple>
+                  <mat-option *ngFor="let option of filterControl.get('optionList')?.value let i = index" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona al menos una opción</mat-error>
+              </mat-form-field>
             </div>
             <div *ngSwitchCase="'multi-dropdown'">
               <mat-form-field>

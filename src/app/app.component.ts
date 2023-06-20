@@ -136,6 +136,23 @@ export class AppComponent {
         ],
         selectedSearchOption: '',
       },
+      {
+        _id: '8',
+        displayName: 'Tipos de Videojuegos',
+        dbName: 'tipos_de_videojuegos',
+        dataType: 'checklist',
+        isCustome: true,
+        optionList: ['Shooter', 'MMORPG', 'MOBA', 'Estrategia', 'BattleRoyal'],
+        isDefault: false,
+        searchOptions: [
+          {key: 'eq', name:'igual a'}, 
+          {key:'neq', name:'diferente de'}, 
+          {key:'in', name:'contenga'}, 
+          {key:'notin', name:'no contenga'}, 
+          {key: 'empty', name:'vacío'},
+        ],
+        selectedSearchOption: '',
+      },
     ]
   }
 
