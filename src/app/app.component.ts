@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { Config, SearchOption } from './smart-filter/models/config';
+import { FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -137,6 +138,11 @@ export class AppComponent {
       },
     ]
   }
+
+  printFilters(filters: FormArray): void{
+    console.log('filter from parent component', filters);
+  }
+
 
 }
 
