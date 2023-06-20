@@ -19,7 +19,6 @@ export class SmartFilterComponent {
   @Input() config: Config = new Config();
 
   filterForm: FormGroup = this._formBuilder.group({
-    config: "Aquí van las configs",
     filters: this._formBuilder.array([]),
   });
 
@@ -47,19 +46,19 @@ export class SmartFilterComponent {
     
     
     const filter = this._formBuilder.group({
-      _id: [''],
-      displayName: [''],
-      dbName: [''],
-      dataType: [''],
-      isCustome: [''],
-      optionList: [''],
-      isDefault: [''],
-      searchOptions: [''],
+      _id:                  [''],
+      displayName:          [''],
+      dbName:               [''],
+      dataType:             [''],
+      isCustome:            [''],
+      optionList:           [''],
+      isDefault:            [''],
+      searchOptions:        [''],
       selectedSearchOption: ['', Validators.required],
-      value: ['', Validators.required],
-      additionalValue: ['', Validators.required],
-      values: this._formBuilder.array([]),
-      filterSelected: ['', Validators.required],
+      value:                ['', Validators.required],
+      additionalValue:      ['', Validators.required],
+      values:               this._formBuilder.array([]),
+      filterSelected:       ['', Validators.required],
     });
     
     this.filters.push(filter);
@@ -98,10 +97,6 @@ export class SmartFilterComponent {
         this.resetFormArrays(control);
       }
     });
-  }
-
-  setDates(filterIndex: number, date: string): void {
-    console.log(this.range.value)
   }
 
   filter(): void {
