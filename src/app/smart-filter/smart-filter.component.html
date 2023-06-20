@@ -1,24 +1,4 @@
-<div class="mb-10">
-  <!-- <p>
-        CONFIG: 
-        {{config | json}}
-    </p> -->
-
-  <!-- <p>
-        FORM: 
-        {{filterForm.value | json}}
-    </p> -->
-
-
-  <p>
-    FILTERS:
-    {{filters.value | json}}
-  </p>
-
-</div>
-
-
-<div>
+<div class="p-6">
 
   <div [formGroup]="filterForm">
 
@@ -159,6 +139,6 @@
   <button [type]="'button'" (click)="addFilter()">+ Agregar filtro</button>
 </div>
 
-<div class="mt-10">
+<div class="mt-10 p-6">
   <button class="border border-gray-300 px-2 py-2" [type]="'button'" (click)="filter()">Aplicar filtro</button>
 </div>
