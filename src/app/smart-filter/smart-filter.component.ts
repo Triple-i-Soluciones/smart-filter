@@ -152,11 +152,11 @@ export class SmartFilterComponent {
 
   setDropdownElementChange(value: any, filterIndex: number, dataType: string): void{
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-    let ifTrueFalse: boolean = this.filters.at(filterIndex).get('booleanOption')?.value;
+    let isTrueFalse: boolean = this.filters.at(filterIndex).get('booleanOption')?.value;
     let arrayValueCheckBox: {name: string, value: boolean}[] = [];
 
     for(let i = 0; i < value.length; i++){
-      let valueCheckBox: {name: string, value: boolean} = {name: value[i], value: ifTrueFalse};
+      let valueCheckBox: {name: string, value: boolean} = {name: value[i], value: isTrueFalse};
       arrayValueCheckBox.push(valueCheckBox);
     }
     
