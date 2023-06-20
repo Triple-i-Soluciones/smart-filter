@@ -25,14 +25,11 @@ export class SmartFilterComponent {
   @Output() filterEvent: EventEmitter<FormArray> = new EventEmitter<FormArray>();
 
   filterForm: FormGroup = this._formBuilder.group({
-    fields: this._formBuilder.array([]),
     filters: this._formBuilder.array([]),
   });
 
   range!: FormGroup;
   prueba: boolean = false;
-
-  // selectedFields: Field[] = [];
 
   fields: FilterField[] = [];
 
