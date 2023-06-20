@@ -2,6 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@a
 import { FormArray, FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { Config, Field } from './models/config';
 
+interface FilterField extends Field {
+  available: boolean;
+}
+
+
 export class UserComponent {
   user = new FormGroup({
     name: new FormControl(''),
@@ -19,11 +24,16 @@ export class SmartFilterComponent {
   @Input() config: Config = new Config();
 
   filterForm: FormGroup = this._formBuilder.group({
+    fields: this._formBuilder.array([]),
     filters: this._formBuilder.array([]),
   });
 
   range!: FormGroup;
   prueba: boolean = false;
+
+  // selectedFields: Field[] = [];
+
+  fields: FilterField[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -31,6 +41,15 @@ export class SmartFilterComponent {
   ) { }
 
   ngOnInit() {
+
+    this.fields = structuredClone(this.config.fields).map((field: Field) => {
+      return {
+        ...field,
+        available: true,
+      }
+    });
+
+    console.log("fields", this.fields)
     this.range = new FormGroup({
       start: new FormControl([ Validators.required]),
       end: new FormControl([Validators.required]),
@@ -41,6 +60,7 @@ export class SmartFilterComponent {
   get filters(): FormArray {
     return this.filterForm.controls["filters"] as FormArray;
   }
+
 
   addFilter(): void {
     
@@ -65,7 +85,11 @@ export class SmartFilterComponent {
   }
  
   deleteFilter(filterIndex: number): void {
+    const fieldId: string = this.filters.at(filterIndex).get('_id')?.value;
     this.filters.removeAt(filterIndex);
+
+    // enable the filter option
+    this.changeEnableStatus(fieldId, true);
   }
 
   filterSelectedChange(field: Field, filterIndex: number): void {
@@ -80,6 +104,9 @@ export class SmartFilterComponent {
     }
     
     this.filters.at(filterIndex).patchValue(field);
+
+    // disable the filter option
+    this.changeEnableStatus(field._id, false);
   }
 
   resetFilterValues(filterIndex: number): void {
@@ -190,4 +217,12 @@ export class SmartFilterComponent {
     valuesArray.enable();
   }
 
+  changeEnableStatus(fieldId: string, isAvailable: boolean): void {
+    // enable the filter option
+    const index: number = this.fields.findIndex(element => element._id === fieldId)
+    if (index === -1) {
+      return
+    }
+    this.fields[index].available = isAvailable;
+  }
 }
