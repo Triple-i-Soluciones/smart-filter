@@ -72,11 +72,9 @@ export class SmartFilterComponent {
   }
  
   deleteFilter(filterIndex: number): void {
-    const fieldId: string = this.filters.at(filterIndex).get('_id')?.value;
     this.filters.removeAt(filterIndex);
 
-    // enable the filter option
-    this.changeEnableStatus(fieldId, true);
+    this.checkFiltersAvailability();
   }
 
   filterSelectedChange(field: Field, filterIndex: number): void {
@@ -84,7 +82,6 @@ export class SmartFilterComponent {
   }
 
   setFilterValue(field: Field, filterIndex: number): void {
-
     const filterId: string = this.filters.at(filterIndex).value._id;
     if (filterId !== '') {
       this.resetFilterValues(filterIndex);
@@ -92,8 +89,7 @@ export class SmartFilterComponent {
     
     this.filters.at(filterIndex).patchValue(field);
 
-    // disable the filter option
-    this.changeEnableStatus(field._id, false);
+    this.checkFiltersAvailability();
   }
 
   resetFilterValues(filterIndex: number): void {
@@ -210,12 +206,17 @@ export class SmartFilterComponent {
     valuesArray.enable();
   }
 
-  changeEnableStatus(fieldId: string, isAvailable: boolean): void {
-    // enable the filter option
-    const index: number = this.fields.findIndex(element => element._id === fieldId)
-    if (index === -1) {
-      return
-    }
-    this.fields[index].available = isAvailable;
+  checkFiltersAvailability(): void {
+    const filters: FilterField[] = this.filterForm.getRawValue().filters;
+    const selectedFilterIds: string[] = filters.filter(element => !element.available && element._id !== '').map(element => element._id);
+
+    this.fields.forEach((element, i) => {
+      let isAvailable: boolean = true;
+      if (selectedFilterIds.includes(element._id)) {
+        isAvailable = false
+      } 
+      this.fields[i].available = isAvailable;
+    });
   }
+
 }
