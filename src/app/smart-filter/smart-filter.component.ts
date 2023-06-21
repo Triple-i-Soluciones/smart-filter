@@ -113,8 +113,8 @@ export class SmartFilterComponent {
     const form = this.filterForm.getRawValue();
     if (!this.filterForm.valid){
       this.filterForm.markAllAsTouched();
-      this.filterEvent.emit(form);
     }
+    this.filterEvent.emit(form);
   }
 
   setInputValue(event: any, filterIndex: number, dataType: string): void {
