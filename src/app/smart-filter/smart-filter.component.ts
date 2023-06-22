@@ -52,18 +52,18 @@ export class SmartFilterComponent {
 
   addFilter(): void {     
     const filter = this._formBuilder.group({
-      _id: [''],
-      displayName: [''],
-      dbName: [''],
-      dataType: [''],
-      isCustome: [''],
-      optionList: [''],
-      isDefault: [''],
-      searchOptions: [''],
-      booleanOption: ['', Validators.required],
+      _id:                  [''],
+      displayName:          [''],
+      dbName:               [''],
+      dataType:             [''],
+      isCustome:            [''],
+      optionList:           [''],
+      isDefault:            [''],
+      searchOptions:        [''],
+      booleanOption:        ['true', Validators.required],
       selectedSearchOption: ['', Validators.required],
       value:                ['', Validators.required],
-      additionalValue:      ['', Validators.required],
+      additionalValue:      [''],
       values:               this._formBuilder.array([]),
       filterSelected:       ['', Validators.required],
     });
@@ -111,8 +111,9 @@ export class SmartFilterComponent {
 
   filter(): void {
     const form = this.filterForm.getRawValue();
-    if (!this.filterForm.valid){
+    if (!this.filterForm.valid || this.filters.length === 0){
       this.filterForm.markAllAsTouched();
+      return;
     }
     this.filterEvent.emit(form);
   }
@@ -170,6 +171,12 @@ export class SmartFilterComponent {
 
   searchOptionSelectedChange(filterIndex: number): void {
     this.checkForEmptyOptionSelected(filterIndex);
+  }
+
+  betweenOptionValidation(filterIndex: number): void{
+    if (this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'btwn' && this.filters.at(filterIndex).get('dataType')?.value !== 'date'){
+      this.filters.at(filterIndex).get('additionalValue')?.setValidators([Validators.required]);
+    }
   }
 
   checkForEmptyOptionSelected(filterIndex: number): void {
