@@ -21,8 +21,6 @@ export class SmartFilterComponent {
   });
 
   range!: FormGroup;
-  prueba: boolean = false;
-
   fields: FilterField[] = [];
 
   constructor(
@@ -114,6 +112,7 @@ export class SmartFilterComponent {
     if (!this.filterForm.valid){
       this.filterForm.markAllAsTouched();
     }
+    console.log(JSON.stringify(form.filters))
     this.filterEvent.emit(form);
   }
 
@@ -241,6 +240,18 @@ export class SmartFilterComponent {
       } 
       this.fields[i].available = isAvailable;
     });
+  }
+
+  setToggleValue(event: any, filterIndex: number): void {
+
+    const value: boolean = event.checked;
+
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+
+    if (valuesArray.length > 0) {
+      valuesArray.clear()
+    }
+    valuesArray.push(this._formBuilder.control(value));
   }
   
 }

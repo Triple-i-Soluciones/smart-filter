@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatInputModule,
     BrowserAnimationsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSlideToggleModule,
   ],
   exports: [
     SmartFilterComponent,

@@ -153,6 +153,20 @@ export class AppComponent {
         ],
         selectedSearchOption: '',
       },
+      {
+        _id: '9',
+        displayName: 'Completada',
+        dbName: 'completed',
+        dataType: 'boolean',
+        isCustome: false,
+        optionList: [],
+        isDefault: false,
+        searchOptions: [
+          {key: 'eq', name:'igual a'}, 
+          {key:'neq', name:'diferente de'}, 
+        ],
+        selectedSearchOption: '',
+      },
     ]
   }
 

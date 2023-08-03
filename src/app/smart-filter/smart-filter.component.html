@@ -1,5 +1,7 @@
 <div class="p-6">
 
+  {{filterForm.value | json}}
+
   <div [formGroup]="filterForm">
 
     <ng-container formArrayName="filters">
@@ -129,6 +131,9 @@
                 </mat-select>
                 <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona al menos una opción</mat-error>
               </mat-form-field>
+            </div>
+            <div *ngSwitchCase="'boolean'">
+                <mat-slide-toggle formControlName="value" (change)="setToggleValue($event, i)">Falso / Verdadero</mat-slide-toggle>
             </div>
 
             <div *ngSwitchDefault>
