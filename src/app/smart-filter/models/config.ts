@@ -16,6 +16,7 @@ export class Field {
     dbName: string = '';
     dataType: string = '';
     isCustome: boolean = false;
+    parentField: string = '';
     optionList: string[] | ObjectList[] = [];
     isDefault: boolean = false;
     searchOptions: SearchOption[] = [];
@@ -47,4 +48,27 @@ export class SearchOption {
 
     key: string = '';
     name: string = '';
+}
+
+export class Filters {
+    public constructor(init?: Partial<Filters>){
+        Object.assign(this, init);
+    }
+
+    filters: Filter[] = [];
+}
+
+export class Filter {
+    public constructor(init?: Partial<Filter>){
+        Object.assign(this, init);
+    }
+
+    dbName: string = '';
+	dataType: string = '';
+	isCustome: boolean = false;
+	parentField: string = '';
+	isDefault: boolean = false;
+	selectedSearchOption: string = '';
+	values: string[] = [];
+	additionalValue: string = '';
 }

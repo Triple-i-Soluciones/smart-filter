@@ -1,5 +1,5 @@
 import { Component, EventEmitter } from '@angular/core';
-import { Config, SearchOption } from './smart-filter/models/config';
+import { Config, Filter, Filters, SearchOption } from './smart-filter/models/config';
 import { FormArray } from '@angular/forms';
 
 @Component({
@@ -33,6 +33,7 @@ export class AppComponent {
         dbName: 'name',
         dataType: 'text',
         isCustome: false,
+        parentField: '',
         optionList: [],
         isDefault: false,
         searchOptions: [
@@ -50,6 +51,7 @@ export class AppComponent {
         dbName: 'due_date',
         dataType: 'date',
         isCustome: false,
+        parentField: '',
         optionList: [],
         isDefault: false,
         searchOptions: [
@@ -72,6 +74,7 @@ export class AppComponent {
         dbName: 'lista_canasta_frutas',
         dataType: 'dropdown',
         isCustome: true,
+        parentField: 'fields',
         optionList: ['Uva', 'Fresa', 'Limón', 'Naranja'],
         isDefault: false,
         searchOptions: [
@@ -89,6 +92,7 @@ export class AppComponent {
         dbName: 'assigned_engineers',
         dataType: 'multi-dropdown',
         isCustome: false,
+        parentField: '',
         optionList: [{_id: 'aaaaa', displayName: 'Noé Reyes'}, {_id: 'bbbbb', displayName: 'Alexis Rodríguez'}, {_id: 'ccccc', displayName: 'Sergio Alonso'}],
         isDefault: false,
         searchOptions: [
@@ -106,6 +110,7 @@ export class AppComponent {
         dbName: 'priority',
         dataType: 'composite-dropdown',
         isCustome: false,
+        parentField: '',
         optionList: [{_id: '0', displayName: 'No urgente'}, {_id: '1', displayName: 'Urgente'}, {_id: '2', displayName: 'Crítica'}],
         isDefault: false,
         searchOptions: [
@@ -122,6 +127,7 @@ export class AppComponent {
         dbName: 'amount',
         dataType: 'number',
         isCustome: false,
+        parentField: '',
         optionList: [],
         isDefault: false,
         searchOptions: [ 
@@ -142,6 +148,7 @@ export class AppComponent {
         dbName: 'tipos_de_videojuegos',
         dataType: 'checklist',
         isCustome: true,
+        parentField: 'fields',
         optionList: ['Shooter', 'MMORPG', 'MOBA', 'Estrategia', 'BattleRoyal'],
         isDefault: false,
         searchOptions: [
@@ -159,6 +166,7 @@ export class AppComponent {
         dbName: 'completed',
         dataType: 'boolean',
         isCustome: false,
+        parentField: '',
         optionList: [],
         isDefault: false,
         searchOptions: [
@@ -170,7 +178,7 @@ export class AppComponent {
     ]
   }
 
-  printFilters(filters: FormArray): void{
+  printFilters(filters: Filter[]): void{
     console.log('filter from parent component', filters);
   }
 

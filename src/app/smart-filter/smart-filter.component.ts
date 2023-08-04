@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
-import { Config, Field } from './models/config';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Config, Field, Filter } from './models/config';
 
 interface FilterField extends Field {
   available: boolean;
@@ -14,7 +14,7 @@ interface FilterField extends Field {
 })
 export class SmartFilterComponent {
   @Input() config: Config = new Config();
-  @Output() filterEvent: EventEmitter<FormArray> = new EventEmitter<FormArray>();
+  @Output() filterEvent: EventEmitter<Filter[]> = new EventEmitter<Filter[]>();
 
   filterForm: FormGroup = this._formBuilder.group({
     filters: this._formBuilder.array([]),
@@ -55,6 +55,7 @@ export class SmartFilterComponent {
       dbName:               [''],
       dataType:             [''],
       isCustome:            [''],
+      parentField:          [''],
       optionList:           [''],
       isDefault:            [''],
       searchOptions:        [''],
@@ -113,8 +114,25 @@ export class SmartFilterComponent {
       this.filterForm.markAllAsTouched();
       return;
     }
-    console.log(JSON.stringify(form.filters))
-    this.filterEvent.emit(form);
+
+    const filters: Filter[] = this.buildFilters(form.filters);
+    // console.log(JSON.stringify(filters))
+    this.filterEvent.emit(filters);
+  }
+
+  buildFilters(formFilters: any[]): Filter[] {
+    return formFilters.map(formFilter => {
+      return new Filter({
+        dbName: formFilter.dbName,
+        dataType: formFilter.dataType,
+        isCustome: formFilter.isCustome,
+        parentField: formFilter.parentField,
+        isDefault: formFilter.isDefault,
+        selectedSearchOption: formFilter.selectedSearchOption,
+        values: formFilter.values,
+        additionalValue: formFilter.additionalValue,
+      })
+    })
   }
 
   setInputValue(event: any, filterIndex: number, dataType: string): void {
