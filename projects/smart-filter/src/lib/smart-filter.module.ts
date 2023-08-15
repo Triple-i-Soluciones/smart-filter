@@ -12,6 +12,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     SmartFilterComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
+
     MatSelectModule,
     ReactiveFormsModule,
     MatIconModule,
