@@ -1,6 +1,5 @@
-import { Component, EventEmitter } from '@angular/core';
-import { Config, Filter, Filters, SearchOption } from './smart-filter/models/config';
-import { FormArray } from '@angular/forms';
+import { Component } from '@angular/core';
+import { Config, Filter} from 'smart-filter';
 
 @Component({
   selector: 'app-root',
