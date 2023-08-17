@@ -1,0 +1,48 @@
+mat-select {
+    width: 100%;
+    min-width: 150px;
+}
+
+mat-form-field {
+    width: 100%;
+    min-width: 150px;
+
+}
+
+.slide-toggle-container {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+}
+
+
+// button add filter  
+button {
+    background-color: #f4f4f4;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+// button apply filter
+.apply-button {
+    background-color: #999;
+    color: #fff;
+    margin-left: 10px;
+}
+
+.apply-button:hover {
+    background-color: #777;
+}

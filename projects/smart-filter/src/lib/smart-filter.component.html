@@ -129,8 +129,8 @@
                 <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona al menos una opción</mat-error>
               </mat-form-field>
             </div>
-            <div *ngSwitchCase="'boolean'">
-                <mat-slide-toggle formControlName="value" (change)="setToggleValue($event, i)">Falso / Verdadero</mat-slide-toggle>
+            <div *ngSwitchCase="'boolean'" class="slide-toggle-container">
+              <mat-slide-toggle formControlName="value" (change)="setToggleValue($event, i)">Falso / Verdadero</mat-slide-toggle>
             </div>
 
             <div *ngSwitchDefault>
@@ -138,17 +138,19 @@
             </div>
           </ng-container>
 
-          <mat-icon class="delete-btn" (click)="deleteFilter(i)">
-            delete_forever</mat-icon>
+          <div class="icon-container">
+            <mat-icon class="delete-btn" (click)="deleteFilter(i)">delete_forever</mat-icon>
+          </div>
+
         </div>
       </ng-container>
     </ng-container>
 
   </div>
+  <div class="flex justify-between">
+    <button [type]="'button'" (click)="addFilter()">+ Agregar filtro</button>
+    <button class="apply-button" [type]="'button'" (click)="filter()">Aplicar filtro</button>
+  </div>
 
-  <button [type]="'button'" (click)="addFilter()">+ Agregar filtro</button>
-</div>
 
-<div class="mt-10 p-6">
-  <button class="border border-gray-300 px-2 py-2" [type]="'button'" (click)="filter()">Aplicar filtro</button>
 </div>
