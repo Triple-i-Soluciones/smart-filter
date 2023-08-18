@@ -112,7 +112,7 @@
             <div *ngSwitchCase="'multi-dropdown'">
               <mat-form-field>
                 <mat-label>Valores</mat-label>
-                <mat-select formControlName="value" multiple>
+                <mat-select formControlName="value" multiple (selectionChange)="setMultiDropdownElementChange($event.value, i, 'multi-dropdown')">
                   <mat-option *ngFor="let option of filterControl.get('optionList')?.value"
                     [value]="option._id">{{option.displayName}}</mat-option>
                 </mat-select>
