@@ -186,6 +186,15 @@ export class SmartFilterComponent {
     })   
   }
 
+  setMultiDropdownElementChange(values: string[], filterIndex: number, dataType: string): void{
+    let valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    valuesArray.clear();
+
+    for (let val of values) {
+      valuesArray.push(this._formBuilder.control(val));
+    }   
+  }
+
   searchOptionSelectedChange(filterIndex: number): void {
     this.checkForEmptyOptionSelected(filterIndex);
   }
