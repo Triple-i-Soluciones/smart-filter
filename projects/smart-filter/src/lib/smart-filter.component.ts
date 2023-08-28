@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Config, Field, Filter } from './models/config';
 
@@ -12,7 +12,9 @@ interface FilterField extends Field {
   styleUrls: ['./smart-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SmartFilterComponent {
+
+export class SmartFilterComponent implements OnInit, OnChanges {
+
   @Input() config: Config = new Config();
   @Output() filterEvent: EventEmitter<Filter[]> = new EventEmitter<Filter[]>();
 
@@ -42,6 +44,19 @@ export class SmartFilterComponent {
       end: new FormControl([Validators.required]),
     });
 
+  }
+
+  /**
+   * ngOnChanges
+   * @param {SimpleChanges} changes changes to inputs event 
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes?.['config']) {
+      this.config = changes['config'].currentValue;
+      this.ngOnInit();
+    }
+      
+    this._changeDetectorRef.detectChanges();
   }
 
   get filters(): FormArray {
