@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Config, Filter} from 'smart-filter';
+import { Config, Filter} from 'projects/smart-filter/src/lib/models/config';
 
 @Component({
   selector: 'app-root',
@@ -171,6 +171,7 @@ export class AppComponent {
         searchOptions: [
           {key: 'eq', name:'igual a'}, 
           {key:'neq', name:'diferente de'}, 
+          {key:'both', name:'ambas'}, 
         ],
         selectedSearchOption: '',
       },

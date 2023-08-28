@@ -197,6 +197,7 @@ export class SmartFilterComponent {
 
   searchOptionSelectedChange(filterIndex: number): void {
     this.checkForEmptyOptionSelected(filterIndex);
+    this.checkForBothOptionSelected(filterIndex);
   }
 
   betweenOptionValidation(filterIndex: number): void{
@@ -213,6 +214,21 @@ export class SmartFilterComponent {
       this.disableFilterValues(filterIndex);
     } else {
       this.enableFilterValues(filterIndex);
+    }
+  }
+
+  checkForBothOptionSelected(filterIndex: number): void {
+    const isBoth: boolean = this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'both';
+
+    if(isBoth) {
+      this.filters.at(filterIndex).get('value')?.disable();
+      this.filters.at(filterIndex).get('value')?.setValue(false);
+      this.filters.at(filterIndex).get('values')?.disable();
+      const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+      valuesArray.clear();
+    } else {
+      this.filters.at(filterIndex).get('value')?.enable();
+      this.filters.at(filterIndex).get('values')?.enable();
     }
   }
 
@@ -278,7 +294,7 @@ export class SmartFilterComponent {
 
   setToggleValue(event: any, filterIndex: number): void {
 
-    const value: boolean = event.checked;
+    const value: string = new Boolean(event.checked).toString();
 
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
