@@ -28,8 +28,10 @@ export class SmartFilterComponent {
     private _changeDetectorRef: ChangeDetectorRef,
   ) { }
 
-  ngOnInit() {
-
+  /**
+   * On Init
+   */
+  ngOnInit(): void {
     this.fields = structuredClone(this.config.fields).map((field: Field) => {
       return {
         ...field,
@@ -44,10 +46,16 @@ export class SmartFilterComponent {
 
   }
 
+  /**
+   * Filters getter
+   */
   get filters(): FormArray {
     return this.filterForm.controls["filters"] as FormArray;
   }
 
+  /**
+   * Adds a filter to the filter list
+   */
   addFilter(): void {     
     const filter = this._formBuilder.group({
       _id:                  [''],
@@ -70,16 +78,30 @@ export class SmartFilterComponent {
     this.filters.push(filter);
   }
  
+  /**
+   * Deletes a filter from the filter list
+   * @param filterIndex 
+   */
   deleteFilter(filterIndex: number): void {
     this.filters.removeAt(filterIndex);
 
     this.checkFiltersAvailability();
   }
 
+  /**
+   * 
+   * @param field 
+   * @param filterIndex 
+   */
   filterSelectedChange(field: Field, filterIndex: number): void {
     this.setFilterValue(field, filterIndex);
   }
 
+  /**
+   * 
+   * @param field 
+   * @param filterIndex 
+   */
   setFilterValue(field: Field, filterIndex: number): void {
     const filterId: string = this.filters.at(filterIndex).value._id;
     if (filterId !== '') {
@@ -88,9 +110,27 @@ export class SmartFilterComponent {
     
     this.filters.at(filterIndex).patchValue(field);
 
+    if (field.dataType === 'boolean') {
+      this.initBooleanValues(filterIndex);
+    }
+
     this.checkFiltersAvailability();
   }
 
+  /**
+   * 
+   * @param filterIndex 
+   */
+  initBooleanValues(filterIndex: number): void {
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    valuesArray.push(this._formBuilder.control('true'));
+    this.filters.at(filterIndex).get('value')?.setValue(true);
+  }
+
+  /**
+   * 
+   * @param filterIndex 
+   */
   resetFilterValues(filterIndex: number): void {
     this.filters.at(filterIndex).get('value')?.setValue('');
     this.filters.at(filterIndex).get('additionalValue')?.setValue('');
@@ -99,6 +139,10 @@ export class SmartFilterComponent {
     this.resetFormArrays(valuesArray);
   }
 
+  /**
+   * 
+   * @param formArray 
+   */
   resetFormArrays(formArray: FormArray): void {
     formArray.clear();
     formArray.controls.forEach((control) => {
@@ -108,6 +152,10 @@ export class SmartFilterComponent {
     });
   }
 
+  /**
+   * 
+   * @returns 
+   */
   filter(): void {
     const form = this.filterForm.getRawValue();
     if (!this.filterForm.valid){
@@ -116,10 +164,15 @@ export class SmartFilterComponent {
     }
 
     const filters: Filter[] = this.buildFilters(form.filters);
-console.log("FINAL: ", filters)
+
     this.filterEvent.emit(filters);
   }
 
+  /**
+   * 
+   * @param formFilters 
+   * @returns 
+   */
   buildFilters(formFilters: any[]): Filter[] {
     return formFilters.map(formFilter => {
       return new Filter({
@@ -254,8 +307,8 @@ console.log("FINAL: ", filters)
   checkForBothOptionSelected(filterIndex: number): void {
     const isBothOptionSelected: boolean = this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'both';
     if(isBothOptionSelected) {
-      this.disableFilterValues(filterIndex)
-      this.filters.at(filterIndex).get('value')?.setValue(false);
+      this.resetFilterValues(filterIndex);
+      this.disableFilterValues(filterIndex);
     }
   }
 
