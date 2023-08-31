@@ -102,6 +102,8 @@ export class SmartFilterComponent implements OnInit, OnChanges {
 
   clearFilters(): void {
     this.filters.clear();
+    this.filterForm.reset();
+    this.range.reset();
     this.checkFiltersAvailability();
     this.clearEvent.emit();
   }
@@ -243,6 +245,9 @@ export class SmartFilterComponent implements OnInit, OnChanges {
   setDateValue(event: any, filterIndex: number, dateRange?: string): void{
     const value: string = event.target.value;
 
+    this.filters.at(filterIndex).get('value')?.removeValidators(Validators.required);
+    this.filters.at(filterIndex).get('value')?.updateValueAndValidity();
+
     //restart form validators if date range is selected more than once
     if(this.range.get('end')?.value == null){
       this.range.get('end')?.setValue(FormGroup, Validators.required)      
@@ -304,6 +309,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
   checkForAddingValidators(filterIndex: number): void {
     this.filters.at(filterIndex).get('values')?.removeValidators(Validators.required);
     this.filters.at(filterIndex).get('value')?.removeValidators(Validators.required);
+    this.filters.at(filterIndex).get('additionalValue')?.removeValidators(Validators.required);
 
     if (this.filters.at(filterIndex).get('selectedSearchOption')?.value !== 'empty') {
       this.filters.at(filterIndex).get('values')?.addValidators(Validators.required);
@@ -311,15 +317,12 @@ export class SmartFilterComponent implements OnInit, OnChanges {
       this.filters.at(filterIndex).get('value')?.addValidators(Validators.required);
       this.filters.at(filterIndex).get('value')?.updateValueAndValidity();
     }
-  }
 
-  /**
-   * 
-   * @param filterIndex 
-   */
-  betweenOptionValidation(filterIndex: number): void{
-    if (this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'btwn' && this.filters.at(filterIndex).get('dataType')?.value !== 'date'){
-      this.filters.at(filterIndex).get('additionalValue')?.setValidators([Validators.required]);
+    if (this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'btwn') {
+      if (this.filters.at(filterIndex).get('dataType')?.value === 'number') {
+        this.filters.at(filterIndex).get('additionalValue')?.addValidators(Validators.required);
+        this.filters.at(filterIndex).get('additionalValue')?.updateValueAndValidity();
+      }
     }
   }
 
