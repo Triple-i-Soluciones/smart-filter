@@ -149,6 +149,8 @@
   </div>
   <div class="flex justify-between">
     <button [type]="'button'" (click)="addFilter()">+ Agregar filtro</button>
+    <button [disabled]="filters.length === 0" [ngClass]="filters.length === 0? 'disabled-button' : ''" class="apply-button"
+    [type]="'button'" (click)="clearFilters()">Limpiar filtros</button>
     <button [disabled]="filterForm.invalid" [ngClass]="filterForm.invalid? 'disabled-button' : ''" class="apply-button"
       [type]="'button'" (click)="filter()">Aplicar
       filtro</button>

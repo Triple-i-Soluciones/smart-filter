@@ -17,6 +17,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
 
   @Input() config: Config = new Config();
   @Output() filterEvent: EventEmitter<Filter[]> = new EventEmitter<Filter[]>();
+  @Output() clearEvent: EventEmitter<any> = new EventEmitter<any>();
 
   filterForm: FormGroup = this._formBuilder.group({
     filters: this._formBuilder.array([]),
@@ -99,6 +100,12 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     this.checkFiltersAvailability();
   }
 
+  clearFilters(): void {
+    this.filters.clear();
+    this.checkFiltersAvailability();
+    this.clearEvent.emit();
+  }
+
   /**
    * 
    * @param field 
@@ -175,7 +182,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     }
 
     const filters: Filter[] = this.buildFilters(form.filters);
-console.log("FINAL: ", filters)
+
     this.filterEvent.emit(filters);
   }
 

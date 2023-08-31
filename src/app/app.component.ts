@@ -182,6 +182,9 @@ export class AppComponent {
     console.log('filter from parent component', filters);
   }
 
+  erased() {
+    console.log("borrado emitido")
+  }
 
 }
 
