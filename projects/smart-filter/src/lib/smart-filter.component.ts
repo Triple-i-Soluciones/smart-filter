@@ -45,7 +45,6 @@ export class SmartFilterComponent implements OnInit, OnChanges {
       start: new FormControl([ Validators.required]),
       end: new FormControl([Validators.required]),
     });
-
   }
 
   /**
@@ -288,6 +287,23 @@ console.log("FINAL: ", filters)
     this.enableFilterValues(filterIndex)
     this.checkForEmptyOptionSelected(filterIndex);
     this.checkForBothOptionSelected(filterIndex);
+    this.checkForAddingValidators(filterIndex);
+  }
+
+  /**
+   * 
+   * @param filterIndex 
+   */
+  checkForAddingValidators(filterIndex: number): void {
+    this.filters.at(filterIndex).get('values')?.removeValidators(Validators.required);
+    this.filters.at(filterIndex).get('value')?.removeValidators(Validators.required);
+
+    if (this.filters.at(filterIndex).get('selectedSearchOption')?.value !== 'empty') {
+      this.filters.at(filterIndex).get('values')?.addValidators(Validators.required);
+      this.filters.at(filterIndex).get('values')?.updateValueAndValidity();
+      this.filters.at(filterIndex).get('value')?.addValidators(Validators.required);
+      this.filters.at(filterIndex).get('value')?.updateValueAndValidity();
+    }
   }
 
   /**
