@@ -17,6 +17,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
 
   @Input() config: Config = new Config();
   @Output() filterEvent: EventEmitter<Filter[]> = new EventEmitter<Filter[]>();
+  @Output() clearEvent: EventEmitter<any> = new EventEmitter<any>();
 
   filterForm: FormGroup = this._formBuilder.group({
     filters: this._formBuilder.array([]),
@@ -30,8 +31,10 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     private _changeDetectorRef: ChangeDetectorRef,
   ) { }
 
-  ngOnInit() {
-
+  /**
+   * On Init
+   */
+  ngOnInit(): void {
     this.fields = structuredClone(this.config.fields).map((field: Field) => {
       return {
         ...field,
@@ -43,7 +46,6 @@ export class SmartFilterComponent implements OnInit, OnChanges {
       start: new FormControl([ Validators.required]),
       end: new FormControl([Validators.required]),
     });
-
   }
 
   /**
@@ -63,6 +65,9 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     return this.filterForm.controls["filters"] as FormArray;
   }
 
+  /**
+   * Adds a filter to the filter list
+   */
   addFilter(): void {     
     const filter = this._formBuilder.group({
       _id:                  [''],
@@ -76,7 +81,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
       searchOptions:        [''],
       booleanOption:        ['true', Validators.required],
       selectedSearchOption: ['', Validators.required],
-      value:                ['', Validators.required],
+      value:                [''],
       additionalValue:      [''],
       values:               this._formBuilder.array([]),
       filterSelected:       ['', Validators.required],
@@ -85,16 +90,38 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     this.filters.push(filter);
   }
  
+  /**
+   * Deletes a filter from the filter list
+   * @param filterIndex 
+   */
   deleteFilter(filterIndex: number): void {
     this.filters.removeAt(filterIndex);
 
     this.checkFiltersAvailability();
   }
 
+  clearFilters(): void {
+    this.filters.clear();
+    this.filterForm.reset();
+    this.range.reset();
+    this.checkFiltersAvailability();
+    this.clearEvent.emit();
+  }
+
+  /**
+   * 
+   * @param field 
+   * @param filterIndex 
+   */
   filterSelectedChange(field: Field, filterIndex: number): void {
     this.setFilterValue(field, filterIndex);
   }
 
+  /**
+   * 
+   * @param field 
+   * @param filterIndex 
+   */
   setFilterValue(field: Field, filterIndex: number): void {
     const filterId: string = this.filters.at(filterIndex).value._id;
     if (filterId !== '') {
@@ -103,9 +130,27 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     
     this.filters.at(filterIndex).patchValue(field);
 
+    if (field.dataType === 'boolean') {
+      this.initBooleanValues(filterIndex);
+    }
+
     this.checkFiltersAvailability();
   }
 
+  /**
+   * 
+   * @param filterIndex 
+   */
+  initBooleanValues(filterIndex: number): void {
+    const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+    valuesArray.push(this._formBuilder.control('true'));
+    this.filters.at(filterIndex).get('value')?.setValue(true);
+  }
+
+  /**
+   * 
+   * @param filterIndex 
+   */
   resetFilterValues(filterIndex: number): void {
     this.filters.at(filterIndex).get('value')?.setValue('');
     this.filters.at(filterIndex).get('additionalValue')?.setValue('');
@@ -114,6 +159,10 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     this.resetFormArrays(valuesArray);
   }
 
+  /**
+   * 
+   * @param formArray 
+   */
   resetFormArrays(formArray: FormArray): void {
     formArray.clear();
     formArray.controls.forEach((control) => {
@@ -123,76 +172,103 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * 
+   * @returns 
+   */
   filter(): void {
     const form = this.filterForm.getRawValue();
-    if (!this.filterForm.valid || this.filters.length === 0){
+    if (!this.filterForm.valid){
       this.filterForm.markAllAsTouched();
       return;
     }
 
     const filters: Filter[] = this.buildFilters(form.filters);
-    // console.log(JSON.stringify(filters))
+
     this.filterEvent.emit(filters);
   }
 
+  /**
+   * 
+   * @param formFilters 
+   * @returns 
+   */
   buildFilters(formFilters: any[]): Filter[] {
     return formFilters.map(formFilter => {
       return new Filter({
-        dbName: formFilter.dbName,
-        dataType: formFilter.dataType,
-        isCustome: formFilter.isCustome,
-        parentField: formFilter.parentField,
-        isDefault: formFilter.isDefault,
+        dbName:               formFilter.dbName,
+        dataType:             formFilter.dataType,
+        isCustome:            formFilter.isCustome,
+        parentField:          formFilter.parentField,
+        isDefault:            formFilter.isDefault,
         selectedSearchOption: formFilter.selectedSearchOption,
-        values: formFilter.values,
-        additionalValue: formFilter.additionalValue,
+        values:               formFilter.values,
+        additionalValue:      formFilter.additionalValue,
       })
     })
   }
 
-  setInputValue(event: any, filterIndex: number, dataType: string): void {
-
-    const value: string | number = event.target.value;
+  /**
+   * 
+   * @param event 
+   * @param filterIndex 
+   */
+  setInputValue(event: any, filterIndex: number): void {
+    const inputValue: string = event.target.value;
 
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-
-    if (valuesArray.length > 0) {
-      valuesArray.clear()
-    }
-    valuesArray.push(this._formBuilder.control(value));
+    valuesArray.clear();
+    valuesArray.push(this._formBuilder.control(inputValue));
   }
 
-  setSecondInputValue(event: any, filterIndex: number, dataType: string): void {
-
-    const value: string | number = event.target.value;
+  /**
+   * 
+   * @param event 
+   * @param filterIndex 
+   */
+  setSecondInputValue(event: any, filterIndex: number): void {
+    const value: string = event.target.value;
 
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-
     if (valuesArray.length > 1) {
       valuesArray.removeAt(1);
     }
     valuesArray.push(this._formBuilder.control(value));
   }
 
-  setDateValue(event: any, filterIndex: number, filterOption: string, dateRange?: string): void{
-
+  /**
+   * 
+   * @param event 
+   * @param filterIndex 
+   * @param dateRange 
+   */
+  setDateValue(event: any, filterIndex: number, dateRange?: string): void{
     const value: string = event.target.value;
+
+    this.filters.at(filterIndex).get('value')?.removeValidators(Validators.required);
+    this.filters.at(filterIndex).get('value')?.updateValueAndValidity();
 
     //restart form validators if date range is selected more than once
     if(this.range.get('end')?.value == null){
       this.range.get('end')?.setValue(FormGroup, Validators.required)      
     } 
     
+    const filterOption: string = this.filters.at(filterIndex).get('selectedSearchOption')?.value;
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
-    if (valuesArray.length > 0 && filterOption !== "entre") valuesArray.clear();
+    if (valuesArray.length > 0 && filterOption !== "btwn") valuesArray.clear();
     
     if ((valuesArray.length > 0 && dateRange==="start")) valuesArray.clear();
 
     if (value !== null) valuesArray.push(this._formBuilder.control(value));
   }
 
-  setDropdownElementChange(value: any, filterIndex: number, dataType: string): void{
+  /**
+   * 
+   * @param value 
+   * @param filterIndex 
+   */
+  setDropdownElementChange(value: any, filterIndex: number): void{
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
     valuesArray.clear();
 
@@ -201,7 +277,12 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     })   
   }
 
-  setMultiDropdownElementChange(values: string[], filterIndex: number, dataType: string): void{
+  /**
+   * 
+   * @param values 
+   * @param filterIndex 
+   */
+  setMultiDropdownElementChange(values: string[], filterIndex: number): void{
     let valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
     valuesArray.clear();
 
@@ -210,43 +291,69 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     }   
   }
 
+  /**
+   * 
+   * @param filterIndex 
+   */
   searchOptionSelectedChange(filterIndex: number): void {
+    this.enableFilterValues(filterIndex)
     this.checkForEmptyOptionSelected(filterIndex);
     this.checkForBothOptionSelected(filterIndex);
+    this.checkForAddingValidators(filterIndex);
   }
 
-  betweenOptionValidation(filterIndex: number): void{
-    if (this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'btwn' && this.filters.at(filterIndex).get('dataType')?.value !== 'date'){
-      this.filters.at(filterIndex).get('additionalValue')?.setValidators([Validators.required]);
+  /**
+   * 
+   * @param filterIndex 
+   */
+  checkForAddingValidators(filterIndex: number): void {
+    this.filters.at(filterIndex).get('values')?.removeValidators(Validators.required);
+    this.filters.at(filterIndex).get('value')?.removeValidators(Validators.required);
+    this.filters.at(filterIndex).get('additionalValue')?.removeValidators(Validators.required);
+
+    if (this.filters.at(filterIndex).get('selectedSearchOption')?.value !== 'empty') {
+      this.filters.at(filterIndex).get('values')?.addValidators(Validators.required);
+      this.filters.at(filterIndex).get('values')?.updateValueAndValidity();
+      this.filters.at(filterIndex).get('value')?.addValidators(Validators.required);
+      this.filters.at(filterIndex).get('value')?.updateValueAndValidity();
+    }
+
+    if (this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'btwn') {
+      if (this.filters.at(filterIndex).get('dataType')?.value === 'number') {
+        this.filters.at(filterIndex).get('additionalValue')?.addValidators(Validators.required);
+        this.filters.at(filterIndex).get('additionalValue')?.updateValueAndValidity();
+      }
     }
   }
 
+  /**
+   * 
+   * @param filterIndex 
+   */
   checkForEmptyOptionSelected(filterIndex: number): void {
-    const isEmptySelected: boolean = this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'empty';
-
-    if(isEmptySelected) {
+    const isEmptyOptionSelected: boolean = this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'empty';
+    if(isEmptyOptionSelected) {
       this.resetFilterValues(filterIndex);
       this.disableFilterValues(filterIndex);
-    } else {
-      this.enableFilterValues(filterIndex);
     }
   }
 
+  /**
+   * 
+   * @param filterIndex 
+   */
   checkForBothOptionSelected(filterIndex: number): void {
-    const isBoth: boolean = this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'both';
-
-    if(isBoth) {
-      this.filters.at(filterIndex).get('value')?.disable();
-      this.filters.at(filterIndex).get('value')?.setValue(false);
-      this.filters.at(filterIndex).get('values')?.disable();
-      const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
-      valuesArray.clear();
-    } else {
-      this.filters.at(filterIndex).get('value')?.enable();
-      this.filters.at(filterIndex).get('values')?.enable();
+    const isBothOptionSelected: boolean = this.filters.at(filterIndex).get('selectedSearchOption')?.value === 'both';
+    if(isBothOptionSelected) {
+      this.resetFilterValues(filterIndex);
+      this.disableFilterValues(filterIndex);
     }
   }
 
+  /**
+   * 
+   * @param filterIndex 
+   */
   disableFilterValues(filterIndex: number): void {
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
@@ -255,6 +362,10 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     valuesArray.disable();
   }
 
+  /**
+   * 
+   * @param filterIndex 
+   */
   enableFilterValues(filterIndex: number): void {
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
 
@@ -263,6 +374,12 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     valuesArray.enable();
   }
 
+  /**
+   * 
+   * @param value 
+   * @param filterIndex 
+   * @param dataType 
+   */
   setCheckListElementChange(value: any, filterIndex: number, dataType: string): void{
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
     let isTrueFalse: boolean = this.filters.at(filterIndex).get('booleanOption')?.value;
@@ -279,6 +396,11 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     });  
   }
 
+  /**
+   * 
+   * @param value 
+   * @param filterIndex 
+   */
   changeOptionSelect(value: boolean, filterIndex: number){
     const valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
     if(valuesArray.length > 0){
@@ -294,6 +416,9 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     }
   }
   
+  /**
+   * 
+   */
   checkFiltersAvailability(): void {
     const filters: FilterField[] = this.filterForm.getRawValue().filters;
     const selectedFilterIds: string[] = filters.filter(element => !element.available && element._id !== '').map(element => element._id);
@@ -307,6 +432,11 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * 
+   * @param event 
+   * @param filterIndex 
+   */
   setToggleValue(event: any, filterIndex: number): void {
 
     const value: string = new Boolean(event.checked).toString();
