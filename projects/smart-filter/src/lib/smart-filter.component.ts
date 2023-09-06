@@ -13,8 +13,9 @@ import { FilterOption } from './models/FilterOption';
 export class SmartFilterComponent implements OnInit, OnChanges {
 
   @Input() config: Config = new Config();
-  @Input() initialFilters: any[] = [];
+  @Input() initialFields: any[] = [];
   @Input() preloadFilter: boolean = false;
+  @Input() doInitialFilter: boolean = false;
 
   @Output() filterEvent: EventEmitter<Filter[]> = new EventEmitter<Filter[]>();
   @Output() clearEvent: EventEmitter<any> = new EventEmitter<any>();
@@ -36,20 +37,34 @@ export class SmartFilterComponent implements OnInit, OnChanges {
    */
   ngOnInit(): void {
     this.setFilterOptions(structuredClone(this.config.fields));
+    this.initRangeFormGroup();
 
     if (this.preloadFilter) {
       this.initFilter();
-    }
 
-    this.range = new FormGroup({
-      start: new FormControl([ Validators.required]),
-      end: new FormControl([Validators.required]),
-    });
+      if (this.doInitialFilter) {
+        this.filter();
+      }
+    }
   }
 
+  /**
+   * Sets the filter options to make them available
+   * @param fields 
+   */
   setFilterOptions(fields: Field[]): void {
     this.filterOptions = structuredClone(fields).map((field: Field) => {
       return new FilterOption(field);
+    });
+  }
+
+  /**
+   * Initialize the range form group
+   */
+  initRangeFormGroup(): void {
+    this.range = new FormGroup({
+      start: new FormControl([ Validators.required]),
+      end: new FormControl([Validators.required]),
     });
   }
 
@@ -58,6 +73,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
    * @param {SimpleChanges} changes changes to inputs event 
    */
   ngOnChanges(changes: SimpleChanges): void {
+    // TODO: Check this method because it makes the ngOnInit run twice
     // if(changes?.['config']) {
     //   this.config = changes['config'].currentValue;
     //   this.ngOnInit();
@@ -457,21 +473,38 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     valuesArray.push(this._formBuilder.control(value));
   }
 
+  /**
+   * Preloads the filters with the initial field values
+   */
   initFilter(): void {
-    this.initialFilters.forEach((filter, i) => {
+    this.initialFields.forEach((filter, i) => {
       this.addFilter();
       // Set selected filter option
       const filterSelected: FilterOption = new FilterOption(filter);
       this.filterSelectedChange(filterSelected._id, i);
       this.filters.at(i).get('filterSelected')?.setValue(filterSelected._id);
       // Set selected search option
-      this.filters.at(i).get('selectedSearchOption')?.setValue('eq')
+      this.filters.at(i).get('selectedSearchOption')?.setValue(filter.selectedSearchOption);
       // Set input values: value and values properties
       this.filters.at(i).get('value')?.setValue(filter.value)
       this.setInputValue({target: {value: filter.values[0]}}, i);
 
-      if (filter[1]) {
-        this.setSecondInputValue({target: {value: filter.values[1]}}, i)
+      if(filter.dataType === 'date') {
+        if (filter.selectedSearchOption === 'btwn') {
+          this.range.get('start')?.setValue(filter.values[0]);
+
+          if (filter.values[1]) {
+            this.range.get('end')?.setValue(filter.values[1]);
+            this.range.get('end')?.setValidators(Validators.required);
+          }
+        }
+      }
+
+      if (filter.dataType === 'number') {
+        if (filter.selectedSearchOption === 'btwn') {
+          this.filters.at(i).get('additionalValue')?.setValue(filter.values[1]);
+          this.setSecondInputValue({target: {value: filter.values[1]}}, i)
+        }
       }
     });
   }

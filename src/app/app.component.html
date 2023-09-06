@@ -1,8 +1,9 @@
 <app-smart-filter 
     [config]="config" 
     (filterEvent)="printFilters($event)" 
-    (clearEvent)="erased()"
-    [initialFilters]="initialFilterValues"
+    (clearEvent)="clear($event)" 
+    [initialFields]="initialFilterValues"
     [preloadFilter]="true"
+    [doInitialFilter]="true"
     >
 </app-smart-filter>
