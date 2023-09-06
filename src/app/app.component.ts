@@ -322,7 +322,7 @@ export class AppComponent {
     //   values:               ['999'],
     //   filterSelected:       [],
     // },
-    // {// example: "number" type and option "btnw"
+    // {// example: "number" type and option "btwn"
     //   _id: '7',
     //   displayName: 'cantidad',
     //   dbName: 'amount',

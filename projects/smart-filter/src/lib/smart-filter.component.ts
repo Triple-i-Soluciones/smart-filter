@@ -506,6 +506,11 @@ export class SmartFilterComponent implements OnInit, OnChanges {
           this.setSecondInputValue({target: {value: filter.values[1]}}, i)
         }
       }
+
+      if (filter.selectedSearchOption === 'empty') {
+        this.checkForEmptyOptionSelected(i);
+      }
+      
     });
   }
 
