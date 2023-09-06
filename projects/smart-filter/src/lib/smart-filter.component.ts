@@ -1,10 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Config, Field, Filter } from './models/config';
-
-interface FilterField extends Field {
-  available: boolean;
-}
+import { FilterOption } from './models/FilterOption';
 
 @Component({
   selector: 'app-smart-filter',
@@ -16,6 +13,9 @@ interface FilterField extends Field {
 export class SmartFilterComponent implements OnInit, OnChanges {
 
   @Input() config: Config = new Config();
+  @Input() initialFilters: any[] = [];
+  @Input() preloadFilter: boolean = false;
+
   @Output() filterEvent: EventEmitter<Filter[]> = new EventEmitter<Filter[]>();
   @Output() clearEvent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -24,7 +24,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
   });
 
   range!: FormGroup;
-  fields: FilterField[] = [];
+  filterOptions: FilterOption[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -35,16 +35,21 @@ export class SmartFilterComponent implements OnInit, OnChanges {
    * On Init
    */
   ngOnInit(): void {
-    this.fields = structuredClone(this.config.fields).map((field: Field) => {
-      return {
-        ...field,
-        available: true,
-      }
-    });
+    this.setFilterOptions(structuredClone(this.config.fields));
+
+    if (this.preloadFilter) {
+      this.initFilter();
+    }
 
     this.range = new FormGroup({
       start: new FormControl([ Validators.required]),
       end: new FormControl([Validators.required]),
+    });
+  }
+
+  setFilterOptions(fields: Field[]): void {
+    this.filterOptions = structuredClone(fields).map((field: Field) => {
+      return new FilterOption(field);
     });
   }
 
@@ -53,12 +58,12 @@ export class SmartFilterComponent implements OnInit, OnChanges {
    * @param {SimpleChanges} changes changes to inputs event 
    */
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes?.['config']) {
-      this.config = changes['config'].currentValue;
-      this.ngOnInit();
-    }
+    // if(changes?.['config']) {
+    //   this.config = changes['config'].currentValue;
+    //   this.ngOnInit();
+    // }
       
-    this._changeDetectorRef.detectChanges();
+    // this._changeDetectorRef.detectChanges();
   }
 
   get filters(): FormArray {
@@ -97,14 +102,14 @@ export class SmartFilterComponent implements OnInit, OnChanges {
   deleteFilter(filterIndex: number): void {
     this.filters.removeAt(filterIndex);
 
-    this.checkFiltersAvailability();
+    // this.checkFiltersAvailability();
   }
 
   clearFilters(): void {
     this.filters.clear();
     this.filterForm.reset();
     this.range.reset();
-    this.checkFiltersAvailability();
+    // this.checkFiltersAvailability();
     this.clearEvent.emit();
   }
 
@@ -113,29 +118,32 @@ export class SmartFilterComponent implements OnInit, OnChanges {
    * @param field 
    * @param filterIndex 
    */
-  filterSelectedChange(field: Field, filterIndex: number): void {
-    this.setFilterValue(field, filterIndex);
-  }
+    filterSelectedChange(field: string, filterIndex: number): void {
+      this.setFilterValue(field, filterIndex);
+    }
 
-  /**
+    /**
    * 
-   * @param field 
+   * @param fieldId 
    * @param filterIndex 
    */
-  setFilterValue(field: Field, filterIndex: number): void {
-    const filterId: string = this.filters.at(filterIndex).value._id;
-    if (filterId !== '') {
-      this.resetFilterValues(filterIndex);
+    setFilterValue(fieldId: string, filterIndex: number): void {
+      const filterId: string = this.filters.at(filterIndex).value._id;
+      if (filterId !== '') {
+        this.resetFilterValues(filterIndex);
+      }
+      
+      const index: number = this.config.fields.findIndex(f => f._id === fieldId);
+      if (index !== -1) {
+        const field: Field = this.config.fields[index]
+        this.filters.at(filterIndex).patchValue(field);
+        
+        if (field.dataType === 'boolean') {
+          this.initBooleanValues(filterIndex);
+        }
+      }
+  
     }
-    
-    this.filters.at(filterIndex).patchValue(field);
-
-    if (field.dataType === 'boolean') {
-      this.initBooleanValues(filterIndex);
-    }
-
-    this.checkFiltersAvailability();
-  }
 
   /**
    * 
@@ -419,18 +427,18 @@ export class SmartFilterComponent implements OnInit, OnChanges {
   /**
    * 
    */
-  checkFiltersAvailability(): void {
-    const filters: FilterField[] = this.filterForm.getRawValue().filters;
-    const selectedFilterIds: string[] = filters.filter(element => !element.available && element._id !== '').map(element => element._id);
+  // checkFiltersAvailability(): void {
+  //   const filters: FilterField[] = this.filterForm.getRawValue().filters;
+  //   const selectedFilterIds: string[] = filters.filter(element => !element.available && element._id !== '').map(element => element._id);
 
-    this.fields.forEach((element, i) => {
-      let isAvailable: boolean = true;
-      if (selectedFilterIds.includes(element._id)) {
-        isAvailable = false
-      } 
-      this.fields[i].available = isAvailable;
-    });
-  }
+  //   this.fields.forEach((element, i) => {
+  //     let isAvailable: boolean = true;
+  //     if (selectedFilterIds.includes(element._id)) {
+  //       isAvailable = false
+  //     } 
+  //     this.fields[i].available = isAvailable;
+  //   });
+  // }
 
   /**
    * 
@@ -448,5 +456,26 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     }
     valuesArray.push(this._formBuilder.control(value));
   }
+
+  initFilter(): void {
+    this.initialFilters.forEach((filter, i) => {
+      this.addFilter();
+      // Set selected filter option
+      const filterSelected: FilterOption = new FilterOption(filter);
+      this.filterSelectedChange(filterSelected._id, i);
+      this.filters.at(i).get('filterSelected')?.setValue(filterSelected._id);
+      // Set selected search option
+      this.filters.at(i).get('selectedSearchOption')?.setValue('eq')
+      // Set input values: value and values properties
+      this.filters.at(i).get('value')?.setValue(filter.value)
+      this.setInputValue({target: {value: filter.values[0]}}, i);
+
+      if (filter[1]) {
+        this.setSecondInputValue({target: {value: filter.values[1]}}, i)
+      }
+    });
+  }
+
+
   
 }

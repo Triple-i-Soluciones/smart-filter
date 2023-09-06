@@ -72,3 +72,26 @@ export class Filter {
 	values: string[] = [];
 	additionalValue: string = '';
 }
+
+// TODO: type input
+// export class FieldGroup {
+//     public constructor(init?: Partial<FieldGroup>){
+//         Object.assign(this, init);
+//     }
+
+//     _id:                  [''],
+//     displayName:          [''],
+//     dbName:               [''],
+//     dataType:             [''],
+//     isCustome:            [''],
+//     parentField:          [''],
+//     optionList:           [''],
+//     isDefault:            [''],
+//     searchOptions:        [''],
+//     booleanOption:        ['true', Validators.required],
+//     selectedSearchOption: ['', Validators.required],
+//     value:                [''],
+//     additionalValue:      [''],
+//     values:               this._formBuilder.array([]),
+//     filterSelected:       ['', Validators.required],
+// }

@@ -178,6 +178,58 @@ export class AppComponent {
     ]
   }
 
+  testDate: Date = new Date();
+  initialFilterValues = [
+    {
+      _id:                  '1',
+      displayName:          'nombre del proyecto',
+      dbName:               'name',
+      dataType:             'text',
+      isCustome:            false,
+      parentField:          '',
+      optionList:           [],
+      isDefault:            false,
+      searchOptions:        [{key: 'eq', name:'igual a'}, 
+                            {key:'neq', name:'diferente de'}, 
+                            {key: 'in', name: 'contenga'}, 
+                            {key: 'notin', name:'no contenga'}, 
+                            {key: 'empty', name:'vacío'}],
+      booleanOption:        null,
+      selectedSearchOption: 'neq',
+      value:                'Sergio Alonso',
+      additionalValue:      '',
+      values:               ['Sergio Alonso'],
+      filterSelected:       [],
+    },
+    // {
+    //   _id: '2',
+    //   displayName: 'fecha de término',
+    //   dbName: 'due_date',
+    //   dataType: 'date',
+    //   isCustome: false,
+    //   parentField: '',
+    //   optionList: [],
+    //   isDefault: false,
+    //   searchOptions: [
+    //     {key: 'eq', name: 'igual a'},
+    //     {key: 'neq', name: 'diferente de'},
+    //     {key: 'in', name: 'contenga'},
+    //     {key: 'notin', name: 'no contenga'},
+    //     {key: 'gr', name: 'mayor que'},
+    //     {key: 'le', name: 'menor que'},
+    //     {key: 'geq', name: 'mayor o igual que'},
+    //     {key: 'leq', name: 'menor o igual que'},
+    //     {key: 'btwn', name: 'entre'},
+    //     {key: 'empty', name: 'vacío'},
+    //   ],
+    //   selectedSearchOption: 'eq',
+    //   value:                this.testDate,
+    //   additionalValue:      '',
+    //   values:               [this.testDate],
+    //   filterSelected:       [],
+    // }
+  ]
+
   printFilters(filters: Filter[]): void{
     console.log('filter from parent component', filters);
   }

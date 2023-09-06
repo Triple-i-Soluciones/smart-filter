@@ -1,18 +1,16 @@
 <div class="p-6">
   <div [formGroup]="filterForm">
-
     <ng-container formArrayName="filters">
 
       <ng-container *ngFor="let filterControl of filters.controls; let i = index">
         <div class="flex gap-4" [formGroupName]="i">
-
           <mat-form-field>
             <mat-label for="">Nombre: </mat-label>
             <mat-select formControlName="filterSelected" (selectionChange)="filterSelectedChange($event.value, i)">
               <mat-option>--</mat-option>
-              <ng-container *ngFor="let field of fields">
-                <mat-option [value]="field" [disabled]="!field.available"> 
-                  {{field.displayName}}
+              <ng-container *ngFor="let option of filterOptions">
+                <mat-option [value]="option._id"> 
+                  {{option.displayName}}
                 </mat-option>
               </ng-container>
             </mat-select>
