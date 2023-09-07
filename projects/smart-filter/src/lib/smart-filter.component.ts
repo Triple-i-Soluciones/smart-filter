@@ -15,7 +15,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
   @Input() config: Config = new Config();
   @Input() initialFields: any[] = [];
   @Input() preloadFilter: boolean = false;
-  @Input() doInitialFilter: boolean = false;
+  @Input() doInitialFiltering: boolean = false;
 
   @Output() filterEvent: EventEmitter<Filter[]> = new EventEmitter<Filter[]>();
   @Output() clearEvent: EventEmitter<any> = new EventEmitter<any>();
@@ -42,7 +42,7 @@ export class SmartFilterComponent implements OnInit, OnChanges {
     if (this.preloadFilter) {
       this.initFilter();
 
-      if (this.doInitialFilter) {
+      if (this.doInitialFiltering) {
         this.filter();
       }
     }

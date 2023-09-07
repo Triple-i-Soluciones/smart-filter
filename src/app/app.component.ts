@@ -417,7 +417,7 @@ export class AppComponent {
   }
 
   clear(event: any) {
-    console.log("borrado emitido: ", event)
+    console.log("filtro borrado: ", event)
   }
 
 }
