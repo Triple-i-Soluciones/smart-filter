@@ -347,7 +347,7 @@ export class AppComponent {
     //   values:               ['999', '2000'],
     //   filterSelected:       [],
     // },
-    // {// TODO: Check how to init this type
+    // {// Example: "checklist" type
     //   _id: '8',
     //   displayName: 'Tipos de Videojuegos',
     //   dbName: 'tipos_de_videojuegos',
@@ -370,7 +370,7 @@ export class AppComponent {
     //   filterSelected:       [],
     //   booleanOption: true
     // },
-    // {
+    // {// EXAMPLE: "boolean" type
     //   _id: '9',
     //   displayName: 'Completada',
     //   dbName: 'completed',
@@ -390,7 +390,7 @@ export class AppComponent {
     //   values:               ['true'],
     //   filterSelected:       [],
     // },
-    // {// TODO: Check type "boolean" with option "both"
+    // {// EXAMPLE: "boolean" type and option "both"
     //   _id: '9',
     //   displayName: 'Completada',
     //   dbName: 'completed',

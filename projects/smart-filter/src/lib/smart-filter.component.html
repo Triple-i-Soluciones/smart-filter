@@ -120,11 +120,11 @@
             <div *ngSwitchCase="'composite-dropdown'">
               <mat-form-field>
                 <mat-label>Valor</mat-label>
-                <mat-select formControlName="value">
+                <mat-select formControlName="value" (selectionChange)="setCompositeDropdownElementChange($event.value, i)">
                   <mat-option *ngFor="let option of filterControl.get('optionList')?.value let i = index"
                     [value]="option._id">{{option.displayName}}</mat-option>
                 </mat-select>
-                <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona al menos una opción</mat-error>
+                <mat-error *ngIf="filterControl.get('value')?.hasError('required')" >Selecciona una opción</mat-error>
               </mat-form-field>
             </div>
             <div *ngSwitchCase="'boolean'" class="slide-toggle-container">

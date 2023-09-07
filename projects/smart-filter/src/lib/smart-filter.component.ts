@@ -317,6 +317,17 @@ export class SmartFilterComponent implements OnInit, OnChanges {
 
   /**
    * 
+   * @param values 
+   * @param filterIndex 
+   */
+    setCompositeDropdownElementChange(value: string, filterIndex: number): void{
+      let valuesArray: FormArray = this.filters.at(filterIndex).get('values') as FormArray;
+      valuesArray.clear();
+      valuesArray.push(this._formBuilder.control(value)); 
+    }
+
+  /**
+   * 
    * @param filterIndex 
    */
   searchOptionSelectedChange(filterIndex: number): void {
@@ -509,6 +520,10 @@ export class SmartFilterComponent implements OnInit, OnChanges {
 
       if (filter.selectedSearchOption === 'empty') {
         this.checkForEmptyOptionSelected(i);
+      }
+
+      if (filter.selectedSearchOption === 'both') {
+        this.checkForBothOptionSelected(i);
       }
       
     });
