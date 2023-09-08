@@ -511,6 +511,10 @@ export class SmartFilterComponent implements OnInit, OnChanges {
         }
       }
 
+      if(filter.dataType === 'multi-dropdown') {
+        this.setMultiDropdownElementChange(filter.values, i)
+      }
+
       if (filter.dataType === 'number') {
         if (filter.selectedSearchOption === 'btwn') {
           this.filters.at(i).get('additionalValue')?.setValue(filter.values[1]);
