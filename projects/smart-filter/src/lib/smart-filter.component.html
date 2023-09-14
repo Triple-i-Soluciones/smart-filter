@@ -3,7 +3,7 @@
     <ng-container formArrayName="filters">
 
       <ng-container *ngFor="let filterControl of filters.controls; let i = index">
-        <div class="flex gap-4" [formGroupName]="i">
+        <div class="flex gap-4 sm:flex-row flex-col" [formGroupName]="i">
           <mat-form-field>
             <mat-label for="">Nombre: </mat-label>
             <mat-select formControlName="filterSelected" (selectionChange)="filterSelectedChange($event.value, i)">
